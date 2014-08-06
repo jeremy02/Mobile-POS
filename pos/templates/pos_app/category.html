@@ -1,0 +1,296 @@
+
+{% extends 'pos_app/base.html' %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <!--<i class="fa fa-comments fa-5x"></i>-->
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">2</p>
+                    <p class="announcement-text">New Categories!</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      View New Categories
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <!--<i class="fa fa-check fa-5x"></i>-->
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">12</p>
+                    <p class="announcement-text">Total Categories</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      View All Categories
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Category Management<!--<small>Enter New User</small>--></h1>
+            <div class="col-lg-6">
+                <ol class="breadcrumb">
+                  <li><a href="index.html"><i class="fa fa-dashboard"></i>Categories</a></li>
+                  <li class="active"><i class="fa fa-edit"></i> Add New Category Form</li>
+                </ol>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb">
+                  <li><a href="index.html"><!--<i class="fa fa-dashboard"></i>Categories--></a></li>
+                  <li class="active"><!--<i class="fa fa-edit"></i> Add New Category Form--></li>
+                </ol>
+            </div>
+            <!--
+            <div class="alert alert-info alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              Visit <a class="alert-link" target="_blank" href="http://getbootstrap.com/css/#forms">Bootstrap's Form Documentation</a> for more information.
+            </div>
+            -->
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-6">
+          <h1>{{ catalogue_name }}</h1>
+          {% if catalogue %}
+          {% if category_added %}
+            <div class="alert alert-info alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <strong>A new Category has been added.</strong>
+              <!--<p><a href="/pos_app/add_person/">Add Another User</a> when you are ready.</p>.
+              <p><a href="/pos_app/login/">Log In</a> when you are ready.</p>.-->
+            </div>
+
+
+            {% else %}
+
+            <form role="form" id="category_form" method="post" action="{{ request.path }}">
+
+                {% csrf_token %}
+
+                {% for hidden in form.hidden_fields %}
+                <div class="form-group">
+                <label>{{ field.help_text }}</label>
+                    <!--{{ field.errors }}-->
+                    {{ hidden }}
+                <!--<p class="help-block">{{ field.help_text }}</p>-->
+                </div>
+                {% endfor %}
+
+
+              <div class="form-group">
+                  <label for="disabledSelect">Catalogue Number</label>
+                <input class="form-control" id="disabledInput" type="text" placeholder="Create category in Catalogue Number {{  catalogue.id }}" disabled>
+              </div>
+
+              <div class="form-group">
+                <label>Category Name</label>
+                <!--<label>{{ form.catalogue_name.errors }}</label>-->
+                {{ form.category_name }}
+                <p class="help-block">{{ form.category_name.errors }}</p>
+                <p class="help-block">{{ form.category_name.help_text }}.</p>
+              </div>        
+
+
+              <button type="submit" class="btn btn-default">Add New Category</button>
+
+            </form>
+            {% endif %}        
+            {% endif %}  
+
+          </div>
+
+
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-clock-o"></i>Recent Categories Activity</h3>
+              </div>
+              <div class="panel-body">
+              {% if recent_categories %}
+                <div class="list-group">
+                {% for category in recent_categories %}
+                  <a href="" class="list-group-item">
+                    <span class="badge">{{category.date_added}}
+                    </span>
+                    <i class="fa fa-check"></i> {{category.category_name}}
+                  </a>
+                  {% endfor %}
+                  
+                  {% else %}
+                  <a href="#" class="list-group-item">
+                    <span class="badge">As of Now</span>
+                    <i class="fa fa-check "></i> There are no categories in {{ catalogue_name }}
+                  </a>
+                  
+                  {% endif %}
+                  
+                </div>
+                <div class="text-right">
+                  <a href="#">View All Categories Activity <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div><!-- /.row -->
+
+<!--
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#basicModal">Click to open Modal</a>
+
+                <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Modal Body</h3>
+                            <form role="form">
+
+                                  <div class="form-group">
+                                    <label>Text Input</label>
+                                    <input class="form-control">
+                                    <p class="help-block">Example block-level help text here.</p>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label>Text Input with Placeholder</label>
+                                    <input class="form-control" placeholder="Enter text">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label>Static Control</label>
+                                    <p class="form-control-static">email@example.com</p>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label>File input</label>
+                                    <input type="file">
+                                  </div>
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+
+        </div><!-- /.row -->
+
+         <div class="row">
+          <div class="col-lg-12">                   <!--start the column class-->
+            <div class="panel panel-primary">       <!--start the primary panel class-->
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> Categories</h3>
+              </div>
+              <div class="panel-body">              <!--start the panel body class-->
+
+                  <!--<div class="col-lg-12"> -->          <!--start the column class-->
+                    <h2>List Of Categories</h2>
+
+                    {% if categories %}
+
+                    <div class="table-responsive"><!--start the table responsive class-->
+                      <table class="table table-bordered table-hover table-striped tablesorter">
+                        <thead>
+                          <tr>
+                            <th><div class="checkbox"><input type="checkbox" value=""></div></i></th>
+                            <th>Category Number <i class="fa fa-sort"></i></th>
+                            <th>Catalogue<i class="fa fa-sort"></th>
+                            <th>Category Name <i class="fa fa-sort"></i></th>
+                            <th> Date Added <i class="fa fa-sort"></i></th>
+                            <th colspan="4">Action <i class="fa fa-sort"></i></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for category in categories %}
+
+                          <tr>
+                            <td><div class="checkbox"><input type="checkbox" value=""></div></td>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.catalogue.catalogue_name }}</td>
+                            <td>{{ category.category_name }}</td>
+                            <td>{{ category.date_added }}</td>
+                            <td>
+                                <div class="text-right">
+                                <a href="">Edit<i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                <a href="#">Delete<i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                <a href="/pos_app/category/{{ category.url }}">Add Product in {{ category.category_name }} <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                          </tr>
+
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>              <!--end  the table responsive class-->
+                    {% else %}
+                      <a href="#" class="list-group-item">
+                        <span class="badge">As of Now</span>
+                        <i class="fa fa-user"></i> There are no categories
+                      </a>
+
+                    {% endif %}
+                  <!--</div>-->                <!--end the column class-->
+
+
+              </div>                    <!--end the panel body class-->
+            </div>                      <!--end the primary panel class-->
+          </div>                        <!--end the column class-->
+        </div><!-- /.row -->
+{% endblock %}

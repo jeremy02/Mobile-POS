@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" /> <!-- CSS -->
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" /> <!-- CSS -->
+        <!--<link rel="stylesheet" href="{% static "css/bootstrap-fluid-adj.css" %}" /> <!-- CSS -->
+        <!--<link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}" /> <!-- CSS -->
+        <!--<link rel="stylesheet" href="{% static "css/bootstrap-responsive.min.css" %}" /> <!-- CSS -->
+
+        <!-- Add custom CSS here -->
+        <link rel="stylesheet" href="{% static "css/pos.css" %}" /> <!-- CSS -->
+        <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}">
+        <!-- Page Specific CSS -->
+        <link rel="stylesheet" href="{% static "http://cdn.oesmith.co.uk/morris-0.4.3.min.css" %}">
+
+        <title>pos_app-Data Integrated</title>
+
+        <script src="{% static "js/custom.js" %}"></script>
+
+</head>
+<body>
+
+
+
+    <div id="wrapper">
+
+      <div id="page-wrapper">
+
+
+        <div class="row">
+                      <div class="col-lg-2">
+                            &nbsp;
+                      </div>
+
+                      <div class="col-lg-6">
+                        <h2 id="nav-tabs">POS Login and Registration</h2>
+                        <!--<div id="login-results">
+
+                            {% if user.is_authenticated %}
+                                <h1>Rango says... hello {{ user.username }}!</h1>
+                                {% else %}
+                                <h1>Hello User</h1>
+                            {% endif %}
+
+                        </div>-->
+                        <div class="alert alert-info alert-dismissable">
+                          Please register here if you are new to POS_APP or if already a user please<a href="#login" data-toggle="tab">Please login.</a> to use the POS.
+                        </div>
+                        <!--start div for the  tabs and tabbed content i.e the bs-example class-->
+                        <div class="bs-example">
+                          <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                            <li class="active"><a href="#register" data-toggle="tab">Register New User</a></li>
+                            <li><a href="#login" data-toggle="tab">Log in User</a></li>
+                          </ul>
+                          <!--start div for the tabbed content -->
+                          <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade active in" id="register">
+
+                            <div class="panel panel-primary">
+                              <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-money"></i> Register</h3>
+                              </div>
+                              <div class="panel-body">
+
+                                <div id="modal_register">
+
+                                </div><!-- end modal register -->
+
+
+                                <form role = "form"  id="registration_form"><!--action="/pos_app/pos_register/" method="post"-->
+
+                                    {% csrf_token %}
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">First Name &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ user_form.first_name}}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">Last Name &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ user_form.last_name}}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">Username &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ user_form.username}}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">Email Address</span>
+                                    {{ user_form.email}}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">Phone No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ posapp_profile_form.phone_number }}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">IDNo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ posapp_profile_form.id_no }}
+                                  </div>
+
+                                  <div class="form-group input-group">
+                                    <span class="input-group-addon">Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {{ user_form.password}}
+                                  </div>
+
+                                    <!-- Provide a button to click to submit the form. -->
+                                    <input type="submit" class="btn btn-success pull-right" id="registration_submitbtn" value="Register"/>
+
+                                    <button type="button" class="btn btn-info pull-left">Back to Log in</button>
+
+                                </form><!-- end form -->
+
+                            </div> <!-- end panel body -->
+                            </div> <!-- end panel primary -->
+                            </div>
+                            <div class="tab-pane fade" id="login">
+                                <div class="row">
+
+                                  <div class="col-lg-12">
+                                    <div class="panel panel-primary">
+                                      <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-user"></i> <span class="pull-right">&nbsp;&nbsp;POS Log In</span></h3>
+                                      </div>
+                                      <div class="clear">
+                                        &nbsp;
+                                      </div>
+                                      <div class="panel-body">
+
+                                        <div id="modal_login">
+
+                                        </div> <!--end modal login -->
+
+                                        <form role="form"  id="login_form"> <!-- action="/pos_app/pos_login/" method="get" -->
+
+                                          {% csrf_token %}
+
+                                          <div class="form-group input-group">
+                                            <span class="input-group-addon">Username</span>
+                                            {{ login_form.login_username }}
+                                          </div>
+
+                                          <div class="clear">
+                                            &nbsp;
+                                          </div>
+
+                                          <div class="form-group input-group">
+                                            <span class="input-group-addon">Password&nbsp;&nbsp;</span>
+                                            {{ login_form.login_password }}
+                                          </div>
+
+                                          <div class="clear">
+                                            &nbsp;
+                                          </div>
+                                          <div class="clear">
+                                            &nbsp;
+                                          </div>
+
+                                          <!-- Provide a button to click to submit the form. -->
+                                          <input type="submit" class="btn btn-success pull-right" value ="Login" id="login_button"/>
+
+                                          <button type="button" class="btn btn-info pull-left">New to POS?Register</button>
+
+                                        </form>
+                                      </div><!--end class panel body -->
+                                    </div><!--end class panel primary -->
+                                        <div class="btn-group pull-right">
+                                          <button type="button" class="btn btn-info">Options</button>
+                                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                          <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Forgot Password</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript:void(0">Change Password</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript:void(0">Cant Access Acount</a></li>
+                                          </ul>
+                                        </div><!-- /btn-group -->
+                                  </div>
+                                </div><!-- /.row -->
+                            </div>
+                          </div>
+                          <!--end div for the tabbed content -->
+                        </div>
+                        <!--End div for the  tabs and tabbed content i.e the bs-example class-->
+                      </div>
+
+                      <div class="col-lg-4">
+                            &nbsp;
+                      </div>
+        </div><!-- /.row -->
+
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+
+
+        <!--Additional javascript -->
+        <script src="{% static "js/bootstrap.js" %}"></script> <!-- JavaScript -->
+        <!-- JavaScript -->
+        <script src="{% static "js/jquery-1.10.2.js" %}"></script>
+        <script>
+            var $.1.10.2 = $.noConflict(true);
+        </script>
+        <script src="{% static "js/bootstrap.js" %}"></script>
+
+        <!-- Page Specific Plugins -->
+        <script src="{% static "http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js" %}"></script>
+        <script src="{% static "http://cdn.oesmith.co.uk/morris-0.4.3.min.js" %}"></script>
+        <script src="{% static "js/morris/chart-data-morris.js" %}"></script>
+        <script src="{% static "js/tablesorter/jquery.tablesorter.js" %}"></script>
+        <script src="{% static "js/tablesorter/tables.js" %}"></script>
+
+
+    <script type="text/javascript">
+            $(function() {
+                    $('#login_button').click(function() {
+                        var login_username,login_password;
+                        login_username = $("#login_username").val();
+                        login_password = $("#login_password").val();
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/pos_app/pos_login/",
+                            data: $("#login_form").serialize() ,
+                            success: function (response)
+                                {
+                                    if(response =='/pos_app/tax/'){
+                                        //show success message
+                                        $('#modal_login').html("<div class='alert alert-dismissable alert-info' id='pos_messages'>" +
+                                                "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+                                                "<h4 class='alert-heading'>Sucess!</h4><span>Welcome "+ login_username + ".You have been successfully Logged In</span></div>");
+
+                                        //empty the inputs in the login form
+                                        $('#login_username').val('');
+                                        $('#login_password').val('');
+
+                                        //window.location = response;
+                                        //similar behavior as an HTTP redirect and redirect to the required url
+                                        var delay = 1000; //Your delay in milliseconds
+                                        setTimeout(function(){
+                                            //window.location.replace(response);
+                                            window.location = response;
+                                        }, delay);
+
+                                    }else{
+                                        $('#modal_login').html(response);
+                                    }
+
+                                },
+                            error:function(data) {
+                                    $('#modal_login').html(data);
+                                }
+                            //dataType: 'html'
+                        });
+                        return false;
+                    });
+            });
+    </script>
+
+    <script type="text/javascript">
+            $(function() {
+
+                    $('#registration_submitbtn').click(function() {
+                        var query;
+                        query = $("#first_name").val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/pos_app/pos_register/",
+                            data: $('#registration_form').serialize(),
+                            success: function (response)
+                                {
+                                    $('#modal_register').html(response);
+                                    $('#firstname').val('');
+                                    $('#lastname').val('');
+                                    $('#username').val('');
+                                    $('#email').val('');
+                                    $('#password').val('');
+                                    $('#phoneno').val('');
+                                    $('#idno').val('');
+                                },
+                            error:function(data) {
+                                    $('#modal_register').html(data);
+                                }
+                            //dataType: 'html'
+                        });
+                        return false;
+                    });
+            });
+    </script>
+
+
+
+</body>
+</html>

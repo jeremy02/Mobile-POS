@@ -1,0 +1,158 @@
+{% if error  %}
+
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Fatal Error in Registration!</h4>
+        <span>{{ error }} </span>
+    </div>
+{% endif %}
+{% if success %}
+    <div class="alert alert-dismissable alert-success" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <span>{{ success }}</span>
+    </div>
+{% endif %}
+
+
+{% if login_error %}
+
+    <div class="alert alert-dismissable alert-danger" id="pos-messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Fatal Error in Login!</h4>
+        <span>{{ login_error }} </span>
+    </div>
+{% endif %}
+
+
+{% if general_error %}
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ general_error }}</span>
+    </div>
+{% endif %}
+
+{% if general_success %}
+    <div class="alert alert-dismissable alert-info" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <span>{{ general_success }}</span>
+    </div>
+{% endif %}
+
+{% if general_warning %}
+    <div class="alert alert-dismissable alert-warning" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ general_warning }}</span>
+    </div>
+{% endif %}
+
+{% if results_success %}
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+
+        {% for prod in products %}
+            <span id="prod-id-{{ prod.id }}">{{ prod.email }}</span>
+            <span id="prod-name-{{ prod.id }}">{{ prod.message }}</span></br>
+        {% endfor %}
+
+        <ul class="pagination">
+
+                <li class="disabled">
+                    <a href="javascript:void(0);">Page {{products.num}} of {{ products.paginator.num_pages }}.</a>
+                </li>
+
+                {% if products.has_previous %}
+                    <li><a href="javascript:void(0);" page="{{ products.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
+                {% endif %}
+
+
+                <!--{% for page in products.paginator.page_range %}
+                    {% if page %}
+                        {% ifequal page products.number %}
+                            <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                        {% else %}
+                            <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}-->
+
+                {% for page in page_numbers %}
+                    {% if page == products.number %}
+                        <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                        <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+
+                {% if products.has_next %}
+                    <li><a href="javascript:void(0);" page="{{ products.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
+                {% endif %}
+
+        </ul>
+
+    </div>
+{% endif %}
+
+<!--for stock handling -->
+{% if stock_results_success %}
+    <div class="alert alert-dismissable alert-info" id="pos_messages">
+        <span>{{ stock_results_success }}</span>
+    </div>
+{% endif %}
+
+{% if stock_results_error %}
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <span>{{ stock_results_error }}</span>
+    </div>
+{% endif %}
+
+{% if stock_results_warning %}
+    <div class="alert alert-dismissable alert-warning" id="pos_messages">
+        <span>{{ stock_results_warning }}</span>
+    </div>
+{% endif %}
+
+<script type="text/javascript">
+$(function() {
+    //$('#pos_messages').fadeIn(1500).delay(3500);//.fadeOut(1500);
+    $('#pos_messages').fadeIn('slow', 'swing', function(){
+        //alert('fadeOut complete');
+    }).delay(2000).fadeOut(1500, 'swing', function(){
+        //alert('fadeOut complete');
+    });
+});
+</script>
+
+<!--this handles the pagination -->
+<script type="text/javascript">
+
+$('.pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({ // create an AJAX call...
+      data:{'page': page},// get the page data to be posted
+      type: 'GET', // GET or POST
+      url: '/pos_app/paginate_test/', // the file to call
+      success: function(response) { // on success..
+          $('#tax-collections').html(response); // update the DIV
+      },
+      error: function(response) { // on error..
+          $('#tax-collections').html(response); // update the DIV
+      }
+  });
+
+});
+
+</script>
+
+

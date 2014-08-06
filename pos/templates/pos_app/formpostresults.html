@@ -1,0 +1,94 @@
+{% if sales_list_error  %}
+
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Fatal Error Adding Item(s)!</h4>
+        <span>{{ sales_list_error }} </span>
+    </div>
+{% endif %}
+{% if sales_list_success %}
+    <div class="alert alert-dismissable alert-info" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Sucess in Adding item(s)!</h4>
+        <span>{{ sales_list_success }}</span>
+    </div>
+{% endif %}
+
+<!--
+{% if messages %}
+    {% for message in messages %}
+      <div{% if message.tags %} class="alert alert-dismissable alert-info-{{ message.tags }}"{% endif %}>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Information!
+        {{ message|safe }}
+      </div>
+    {% endfor %}
+{% endif %}
+-->
+
+{% if complete_sale_error %}
+
+    <div class="alert alert-dismissable alert-danger" id="complete_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Fatal Error in Making Sale!</h4>
+        <span>{{ complete_sale_error }} </span>
+    </div>
+{% endif %}
+
+{% if complete_sale_success %}
+    <div class="alert alert-dismissable alert-info" id="complete_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Sucess in Making Sale!</h4>
+        <span>{{ complete_sale_success }}</span>
+    </div>
+{% endif %}
+
+<!--{% if messages %}
+    {% for message in messages %}
+      <div{% if message.tags %} class="alert alert-dismissable alert-info-{{ message.tags }}"{% endif %}>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Information!
+        {{ message|safe }}
+      </div>
+    {% endfor %}
+{% endif %}-->
+
+    <script type="text/javascript">
+    $('#pos_messages').fadeIn('slow', 'swing', function(){
+            //alert('fadeIn complete');
+        }).delay(2000).fadeOut(1500, 'swing', function(){
+            //alert('fadeOut complete');
+    });
+
+    //show the modal function with a progress bar
+    $('#myModal2').on('shown.bs.modal', function () {
+
+        var progress = setInterval(function() {
+        var $bar = $('.bar');
+
+        if ($bar.width()==500) {
+
+            // complete
+
+            clearInterval(progress);
+            $('.progress').removeClass('active');
+            $('#myModal2').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            $bar.width(0);
+
+        } else {
+
+            // perform processing logic here
+
+            $bar.width($bar.width()+50);
+        }
+
+        $bar.text($bar.width()/5 + "%");
+        }, 800);
+
+
+    })
+    //end of modal function
+
+    </script>

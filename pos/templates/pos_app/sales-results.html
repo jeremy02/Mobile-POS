@@ -1,0 +1,198 @@
+{% if sales_results_error %}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ sales_results_error }}</span>
+    </div>
+{% endif %}
+
+{% if sales_results_success %}
+
+    <!--<ul class="nav nav-tabs ">  -->
+        <ul class="nav nav-pills nav-stacked col-lg-2 col-md-2">
+          {% for i in sales_list%}
+            {% if forloop.first %}
+                <li class="active"><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
+            {% else %}
+                <li><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
+            {% endif %}
+          {% endfor%}
+        </ul>
+
+        <div id="tab-content" class="tab-content col-lg-10 col-md-10"><!--tab-content -->
+
+            {% for i in sales_list%}
+              {% if forloop.first %}<!--if its the first item in the loop -->
+                    <div class="tab-pane fade active in" id="{{i.transaction}}">  <!--tab-pane -->
+                        <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
+                        <div class="list-group"><!--list-group -->
+                            <a href="#" class="list-group-item">
+                                Total Total <span class="badge">{{ i.totalsale }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Tax <span class="badge">{{ i.totaltax }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Net <span class="badge">{{ i.totalnet }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Date <span class="badge">{{ i.date_added|date:'Y/m/d' }}</span>
+                            </a>
+                        </div><!--list-group -->
+                        </div><!--bs-example -->
+
+                        <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
+
+                            <table class="table">
+                                <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
+                                <thead>
+                                  <tr>
+                                    <th>Product Name</th>
+                                    <th>Subtotal</th>
+                                    <th>Tax Amt</th>
+                                    <th>Net Amt</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in i.sales_line_item_set.all %}
+                                <tr>
+                                    <td>{{  item.product.product_name }}</td>
+                                    <td>{{  item.subtotal }}</td>
+                                    <td>{{ item.tax_amount }}</td>
+                                    <td>{{ item.net_total }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr class="active">
+                                    <td>Totals</td>
+                                    <td>{{ i.totalsale }}</td>
+                                    <td>{{ i.totaltax }}</td>
+                                    <td>{{ i.totalnet }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div><!--bs-example -->
+
+                    </div> <!--tab-pane -->
+              {% else %} <!--if its other items in the loop -->
+                    <div class="tab-pane fade in" id="{{i.transaction}}"> <!--tab-pane -->
+                        <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
+                        <div class="list-group"><!--list-group -->
+                            <a href="#" class="list-group-item">
+                                Total Total <span class="badge">{{ i.totalsale }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Tax <span class="badge">{{ i.totaltax }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Net <span class="badge">{{ i.totalnet }}</span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                Total Date <span class="badge">{{ i.date_added|date:'Y/m/d' }}</span>
+                            </a>
+                        </div><!--list-group -->
+                        </div><!--bs-example -->
+
+                        <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
+                            <table class="table">
+                                <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
+                                <thead>
+                                  <tr>
+                                    <th>Product Name</th>
+                                    <th>Subtotal</th>
+                                    <th>Tax Amt</th>
+                                    <th>Net Amt</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in i.sales_line_item_set.all %}
+                                <tr>
+                                    <td>{{  item.product.product_name }}</td>
+                                    <td>{{  item.subtotal }}</td>
+                                    <td>{{ item.tax_amount }}</td>
+                                    <td>{{ item.net_total }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr class="active">
+                                    <td>Totals:</td>
+                                    <td>{{ i.totalsale }}</td>
+                                    <td>{{ i.totaltax }}</td>
+                                    <td>{{ i.totalnet }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div><!--bs-example -->
+
+                    </div> <!--tab-pane -->
+              {% endif %}
+
+            {% endfor%}
+        </div> <!--tab-content -->
+
+
+
+        <div class="text-center"> <!--pagination grid -->
+
+        <ul class="pagination" id="sales-results_pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{sales_list.number}} of {{ sales_list.paginator.num_pages }}.</a>
+            </li>
+
+            {% if sales_list.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ sales_list.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in page_numbers %}
+                {% if page == sales_list.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if sales_list.has_next %}
+                <li><a href="javascript:void(0);" page="{{ sales_list.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+        </div><!--pagination grid -->
+
+
+{% endif %}
+
+{% if sales_results_warning %}
+    <div class="alert alert-dismissable alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ sales_results_warning }}</span>
+    </div>
+{% endif %}
+
+<!--this handles the pagination -->
+<script type="text/javascript">
+
+$('#sales-results_pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({ // create an AJAX call...
+      data:{'page': page},// get the page data to be posted
+      type: 'GET', // GET or POST
+      url: '/pos_app/sales_results/', // the file to call
+      success: function(response) { // on success..
+          $('#sales-results').html(response).fadeOut('slow', function() { // update the DIV
+                $('#sales-results').fadeIn('slow');
+          });
+            /*var div=$("#sales-results");
+            div.animate({opacity:'0.2'},"slow");
+            div.animate({opacity:'0.4'},"slow");
+            div.animate({opacity:'0.8'},"slow");
+            div.animate({opacity:'1.0'},"slow");*/
+      },
+      error: function(response) { // on error..
+          $('#sales-results').html(response); // update the DIV
+      }
+  });
+
+});
+</script>

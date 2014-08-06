@@ -1,0 +1,286 @@
+{% if product_result.count > 0 %}
+  <div class="alert alert-dismissable alert-success">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Success!</strong> The number of products found is:  <a class="alert-link" >{{ product_result.count }}</a>.
+  </div>
+
+  {% for product in product_result %}
+    <a class="list-group-item" href="" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}"> {{product.product_name }}</a>
+  {% endfor %}
+
+
+{% elif details.count > 0 %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+        {% for details in details %}
+        <h4>Item on Sale:&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-primary">{{ details.product.product_name }}</span></h4>
+        <div class="bs-example"> <!--start bs-example-->
+              <ul class="nav nav-pills">
+                <li class="disabled active"><a>Price<span class="badge">{{ details.selling_price }}</span></a></li>
+                <!--<li class="disabled"><a>&nbsp;</a></li>-->
+                <li class="disabled"><a>Tax Rate<span class="badge">{{ details.tax.tax_rate }}</span></a></li>
+                <!--<li class="disabled"><a>&nbsp;</a></li>-->
+                <li class="disabled active"><a>Serial<span class="badge">{{ details.product.product_serial_code }}</span></a></li>
+                <!--<li class="disabled"><a>&nbsp;</a></li>-->
+                <li class="disabled"><a>Date<span class="badge">Date</span></a></li>
+
+              </ul>
+        </div><!--End bs-example-->
+        {% endfor %}
+
+      </div>
+      <div class="modal-body">
+
+      	<div class="row">
+          <div class="col-lg-12">
+
+          	<div class="col-lg-4 text-center">
+	            <div class="panel panel-default">
+	              <div class="panel-body">
+	                Image of Product
+	              </div>
+	            </div>
+            </div>
+
+            <div class="col-lg-8">
+                <form role="form" id="sales_line_item_form">
+                <!--<form action="/pos_app/product_details/" method="post" id="sales_form">-->
+                  {% for details in details %}
+                  <div id="ajaxwrapper">
+                  {% csrf_token %}
+                  <input id="product_name" value="{{ details.product.product_name }}" type="hidden" name = "product_name">
+                  <input id="price" value="{{ details.selling_price }}" type="hidden" name = "price">
+                  <input id="tax" value="{{ details.tax.tax_rate }}" type="hidden" name="tax">
+                  <input id="id" value="{{ details.product.id }}" type="hidden" name="id">
+
+                  <input id="subtotal2" value="" name ="subtotal2" type="hidden">
+                  <input id="tax_amount2" value="" name = "tax_amount2" type="hidden">
+                  <input id="net_total2" value="" name = "net_total2" type="hidden">
+                  <input id="id2" value="{{ details.product.id }}" type="hidden" name="id2">
+                  <input id="transaction-no-duplicate" type="text" name="transaction-no-duplicate">
+
+
+                  {{ form.non_field_errors }}
+                  {{ form.as_p }}
+
+                  <button type="submit"  class="btn btn-danger pull-right" id="add-to-list"> Add to List </button>
+                  <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
+                  </div>
+                  {% endfor %}
+                </form>
+
+            </div>
+
+          </div>
+
+        </div><!-- /.row -->
+
+      </div>
+      <!--modal footer -->
+      <div class="modal-footer">
+         <!--this is for the sales line item form messages -->
+         <div id="sales_line_item_form_messages">
+         </div>
+         <!--this is for the sales line item form messages -->
+      </div>
+      <!--modal footer -->
+    </div>
+
+{% elif details.count < 0 %}
+
+	<a class="list-group-item active" href=""> No products found!!!  Please search again!</a>
+
+
+{% else %}
+
+	<a class="list-group-item active" href=""> Just an error!!!  Please restart your search!!!</a>
+
+
+
+{% endif %}
+
+<script>
+
+//When DOM loaded we attach click event to button
+$(document).ready(function() {
+$('.list-group a').click(function(){
+    //then call the attr method to get back the links value
+    var productId = $(this).attr('value');
+    //update the results span with the href value
+    //alert(sectionId);
+    var query;
+            //query = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: "/pos_app/product_details/",
+                data: {
+                    'search_text' : productId,
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data)
+                    {
+                        $('#search-results2').html(data);
+                    }
+                //dataType: 'html'
+    });
+});
+
+
+$("#add-to-list").attr("disabled",true);
+
+$("#quantity").keyup(function(){
+  //regex to check if integer or float or not a number
+   var intRegex = /^\d+$/;
+   var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+
+   //get the values
+   var quantity= $("#quantity").val();
+   var price= $("#price").val();
+   var tax= $("#tax").val();
+   var id= $("#id").val();
+
+   //calculate the subtotal
+   var subtotal = price * quantity;
+   subtotal = Math.round(subtotal).toFixed(2);
+   //subtotal = parseFloat(subtotal);
+
+   //calculate the tax
+   var tax_amount =  (tax/100) * subtotal;
+   tax_amount = Math.round(tax_amount).toFixed(2);
+   //tax_amount = parseFloat(tax_amount);
+
+   //calculate the net total
+   var net_total =  subtotal - tax_amount;
+   net_total= Math.round(net_total).toFixed(2);
+   //net_total= parseFloat(net_total);
+
+   if(quantity== ""){
+       //$("#quantity").val('').attr("placeholder", "Enter the quantity").placeholder();
+       $("#quantity").val('').attr("placeholder", "Enter the quantity here").blur();
+       $("#subtotal").val('').attr("placeholder", "Please enter the quantity.").blur();
+       $("#tax_amount").val('').attr("placeholder", "Please enter the quantity.").blur();
+       $("#net_total").val('').attr("placeholder", "Please enter the quantity.").blur();
+       $("#add-to-list").attr("disabled",true);
+   }else if(!intRegex.test(quantity)){
+      $("#quantity").val("").attr("placeholder", "Quantity entered must be a number!!!").blur();
+      $("#subtotal").val('').attr("placeholder", "Quantity value entered must be a number!!!").blur();
+      $("#tax_amount").val('').attr("placeholder", "Quantity value entered must be a number!!!").blur();
+      $("#net_total").val('').attr("placeholder", "Quantity value entered must be a number!!!").blur();
+      $("#add-to-list").attr("disabled",true);
+   }else if(quantity <= 0 ){
+      $("#quantity").val("").attr("placeholder", "Quantity must be greater than 0!!!").blur();
+      $("#subtotal").val('').attr("placeholder", "Quantity must be greater than 0!!!").blur();
+      $("#tax_amount").val('').attr("placeholder", "Quantity must be greater than 0!!!").blur();
+      $("#net_total").val('').attr("placeholder", "Quantity must be greater than 0!!!").blur();
+      $("#add-to-list").attr("disabled",true);
+   }else{
+       $("#subtotal").val(subtotal);
+       $("#subtotal2").val(subtotal);
+       $("#tax_amount2").val(tax_amount);
+       $("#tax_amount").val(tax_amount);
+       $("#net_total").val(net_total);
+       $("#net_total2").val(net_total);
+       $("#add-to-list").attr("disabled",false);
+
+   }//end the else statement
+});
+
+});
+
+</script>
+
+<script>
+
+//duplicate the values for transaction into another div
+var transactionno= $("#transaction-no").text();
+//duplicate the value in the div with id transaction-no-duplicate in the modal
+$("#transaction-no-duplicate").val( transactionno );
+//duplicate the value in the div with id transaction-no-duplicate1 in the the sales result
+$("#transaction-no-duplicate1").val( transactionno );
+
+$("#add-to-list").click(function(event) // catch the form's submit event
+{
+    //show the transaction div
+    //$('#sales-transaction').show();
+
+    event.preventDefault();
+    //set the timeout for all the messages
+    //setTimeout(function(){
+        //$("#nauri_messages").fadeOut(1000)
+    //}, 1000);
+
+    //the values to append to the list of current sale
+    var name= $("#product_name").val();
+    var subtotal= $("#subtotal").val();
+    var nettotal= $("#net_total").val();
+    var taxtotal= $("#tax_amount").val();
+
+    //append these elements to the interface
+    $('#sales-list').prepend('<div class="list-group-item"><span class="badge">'+subtotal+'</span>'+name+'</div>');
+    //append the values for all the totals for tax,net and total sale but hide the inputs
+    $('#hidden-appends').prepend('<input class="subtotal" type="hidden" value="'+subtotal+'" name="subtotal" />');
+    $('#hidden-appends').prepend('<input class="nettotal" type="hidden" value="'+nettotal+'" name="nettotal" />');
+    $('#hidden-appends').prepend('<input class="taxtotal" type="hidden" value="'+taxtotal+'" name="taxtotal" />');
+
+    calculateSum();
+<!--this is for the sales-line-item form submission ajax call -->
+  $.ajax({ // create an AJAX call...
+      type:"POST",// GET or POST
+      url:'/pos_app/sales_list_add/',
+      data: $('#sales_line_item_form').serialize(),// get the form data
+      success: function(response) { // on success..
+          $('#sales_line_item_form_messages').html(response); // update the DIV
+
+          //show the modal function with a progress bar
+          var progress = setTimeout(function() {
+              // complete
+              clearInterval(progress);
+              $('#myModal').delay(100).fadeOut(100);//.modal('hide');
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              event.stopPropagation();
+
+          }, 1800);
+          //end modal function timeout
+      },
+      error: function(response){
+        $('#sales_line_item_form_messages').html(response); // update the DIV
+      }
+  });
+  return false;
+});
+
+function calculateSum() {
+    var totalsum = 0,netsum = 0,taxsum=0;
+
+    //iterate through each textboxes and add the values
+    //get the totalsales amount by looping through all the subtotal inputs
+    $(".subtotal").each(function() {
+        totalsum += parseFloat(this.value);
+    });
+    //get the nettotal sales amount by looping through all the nettotal inputs
+    $(".nettotal").each(function() {
+        netsum += parseFloat(this.value);
+    });
+    //get the taxtotal amount by looping through all the taxtotal inputs
+    $(".taxtotal").each(function() {
+        taxsum += parseFloat(this.value);
+    });
+    //parse the values to the pills and show in the interface
+	$("#sum_subtotal_span").text(totalsum.toFixed(2));
+    $("#sum_nettotal_span").text(netsum.toFixed(2));
+    $("#sum_taxtotal_span").text(taxsum.toFixed(2));
+
+    //parse the values to the hidden inputs for the sales form to be posted
+	$("#totalsale").val(totalsum.toFixed(2));
+    $("#totalnet").val(netsum.toFixed(2));
+    $("#totaltax").val(taxsum.toFixed(2));
+}
+
+</script>
+
+
+

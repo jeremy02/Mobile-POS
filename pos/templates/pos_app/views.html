@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<head>
+    <title>Contact</title>
+    <script type="text/javascript"
+        src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js">
+    </script>
+    <script type="text/javascript"
+        src="http://malsup.github.com/min/jquery.form.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /*function block_form() {
+                $("#loading").show();
+                $('textarea').attr('disabled', 'disabled');
+                $('input').attr('disabled', 'disabled');
+            }
+
+            function unblock_form() {
+                $('#loading').hide();
+                $('textarea').removeAttr('disabled');
+                $('input').removeAttr('disabled');
+                $('.errorlist').remove();
+            }*/
+
+            // prepare Options Object for plugin
+            var options = {
+                /*beforeSubmit: function(form, options) {
+                    // return false to cancel submit
+                    //block_form();
+                },*/
+                $.ajax({
+                            type: "GET",
+                            url: "/pos_app/contact_form/",
+                            data: {
+                                'id': $('#id').val(),
+                                'quantity' : $("#quantity").val()
+                                //'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                            },
+                                success: function (data)
+                                    {
+                                    $("#form_ajax").show();
+                                    setTimeout(function() {
+                                        $("#form_ajax").hide();
+                                    }, 5000);
+                                    }
+                                //dataType: 'html'
+                            });
+            $('#ajaxform').ajaxForm(options);
+
+        });
+    </script>
+</head>
+<body>
+    <h1>Contact</h1>
+    <form id="ajaxform" action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="id" value="1" id="id">
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <div id="loading" style="display:none;">
+            <span id="load_text">loading...</span>
+        </div>
+        <div id="form_ajax" style="display:none;">
+            <span>Form submit successfully.</span>
+        </div>
+        <div id="form_ajax_error" style="display:none;">
+            <span>Can not submit data due to errors.</span>
+        </div>
+        <p id="sendwrapper"><input type="submit" value="Send" id="sendbutton"/></p>
+    </form>
+</body>
+</html>
+

@@ -1,0 +1,294 @@
+
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Store <small>Product Statistics Overview</small></h1>
+            <ol class="breadcrumb">
+              <li class="active"><i class="fa fa-dashboard"></i> Store Management Dashboard</li>
+            </ol>
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-danger"><!--panel-->
+              <div class="panel-heading"> <!--panel heading-->
+                <h3 class="panel-title">Out of Stock</h3>
+              </div><!--panel heading-->
+              <div class="panel-body" id="out-ofstock"><!--panel body-->
+                    <a href="javascript:void(0);" class="list-group-item active">
+                        Product Name <span class="badge">Date Out of Stock</span>
+                    </a>
+                {% if general_error %}
+                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">Error!</h4>
+                        <span>{{ general_error }}</span>
+                    </div>
+                {% endif %}
+
+                {% if general_success %}
+                    <!--<div class="alert alert-dismissable alert-info" id="pos_messages">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">Sucess!</h4>
+                        <span>{{ general_success }}</span>
+                    </div>-->
+                  <!--loop through the out of stcck products -->
+                    {% if out_of_stock_list.count > 0 %}
+                        {% for item in out_of_stock_list %}
+                        <a class="list-group-item" href="javascript:void(0);" value="{{ item.id  }}"> {{ item.product.product_name }}
+                        <span class="badge">{{ item.date_out_of_stock }}</span></a>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+                {% if general_warning %}
+                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">Warning!</h4>
+                        <span>{{ general_warning }}</span>
+                    </div>
+                {% endif %}
+              </div><!--panel body-->
+              <div class="panel-footer"><!--panel footer-->
+                Shows the list of Products Out of Stock
+              </div><!--panel footer-->
+            </div><!--panel-->
+          </div>
+
+          <div class="col-lg-6">
+
+            <div class="panel panel-danger"><!--panel-->
+              <div class="panel-heading"> <!--panel heading-->
+                <h3 class="panel-title">Replenish Stock <small class="pull-right">Almost Running Out of stock</small></h3>
+              </div><!--panel heading-->
+              <div class="panel-body" id="out-ofstocklist"><!--panel body-->
+
+
+                {% if general_error_2 %}
+                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">Error!</h4>
+                        <span>{{ general_error }}</span>
+                    </div>
+                {% endif %}
+
+                {% if general_success_2 %}
+                  {% if almost_out_of_stock_list.count > 0 %}
+                        {% for item in almost_out_of_stock_list %}
+                        <a href="javascript:void(0);" class="list-group-item">
+                            <h4 class="list-group-item-heading">{{ item.product.product_name }}</h4>
+                            </span> Remaining Items<span class="label label-danger pull-right">{{ item.quantity }}</span>
+                            <p class="list-group-item-text">
+                                <!-- Button trigger modal -->
+                                <!-- Small modal -->
+
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#smallModal" id="testing">Add Stock</button>
+                                <div id="smallModal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content"><!--modal content-->
+                                            <div class="modal-header"><!--modal header-->
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title">Add Stock to: <span class="text-info">{{ item.product.product_name }}</span></h4>
+                                            </div><!--modal header-->
+
+                                            <div class="modal-body"><!--modal body-->
+
+                                                <form role="form" id="stock-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product-id" value="{{ item.product.id }}">
+                                                    <input type="hidden" name="total-stock" id="total-stock" class="form-control">
+
+                                                  <div class="form-group input-group">
+                                                    <span class="input-group-addon">New Stock</span>
+                                                    <input type="text"  name="rep-stock" id="rep-stock" class="form-control" placeholder="Enter amount of stock" autofocus autocomplete="off">
+                                                  </div>
+
+                                                  <div class="form-group input-group">
+                                                    <span class="input-group-addon">Current Stock</span>
+                                                    <input type="text" name="current-stock" id="current-stock" class="form-control" value="{{ item.quantity }}" disabled>
+                                                  </div>
+
+                                                  <div class="form-group input-group">
+                                                    <span class="input-group-addon">Total Stock</span>
+                                                    <input type="text"  name="total-stock-rep" id="total-stock-rep" class="form-control" disabled>
+                                                  </div>
+
+                                                    <!--show error or success messages -->
+                                                  <div id="stock_update-messages"></div>
+                                                </form>
+                                            </div><!--modal body-->
+                                            <div class="modal-footer"><!--modal footer-->
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary" id="save-stock">Save</button>
+                                            </div><!--modal footer-->
+                                        </div><!--modal content-->
+                                    </div>
+                                </div><!--modal-->
+
+
+                            </p>
+
+                        </a>
+                        {% endfor %}
+                    {% endif %}
+
+                {% endif %}
+
+                {% if general_warning_2 %}
+                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4 class="alert-heading">Warning!</h4>
+                        <span>{{ general_warning_2 }}</span>
+                    </div>
+                {% endif %}
+
+              </div><!--panel body-->
+              <div class="panel-footer"><!--panel footer-->
+                Search or Click any product on list to replenish the products.
+              </div><!--panel footer-->
+            </div><!--panel-->
+          </div>
+        </div>
+
+        <div class="row"><!-- row -->
+          <div class="col-lg-6">
+            <h2 id="nav-tabs">Tabs</h2>
+            <div class="bs-example">
+              <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                <li class="active"><a href="#catalogue" data-toggle="tab">Manage Catalogues</a></li>
+                <li><a href="#category" data-toggle="tab">Manage Categories</a></li>
+                <li><a href="#product" data-toggle="tab">Manage Products</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="catalogue">
+
+                    <ul class="nav nav-pills nav-stacked col-lg-3">
+                      <li class="active"><a href="#tab_a" data-toggle="pill">Pill A</a></li>
+                      <li><a href="#tab_b" data-toggle="pill">Pill B<span class="badge">You</span> </a></li>
+                      <li><a href="#tab_c" data-toggle="pill">Pill C</a></li>
+                      <li><a href="#tab_d" data-toggle="pill">Pill D</a></li>
+                    </ul>
+                    <div class="tab-content col-lg-9">
+                            <div class="tab-pane active" id="tab_a">
+                                 <h4>Pane A</h4>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+                                    ac turpis egestas.</p>
+                            </div>
+                            <div class="tab-pane" id="tab_b">
+                                 <h4>Pane B</h4>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+                                    ac turpis egestas.</p>
+                            </div>
+                            <div class="tab-pane" id="tab_c">
+                                 <h4>Pane C</h4>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+                                    ac turpis egestas.</p>
+                            </div>
+                            <div class="tab-pane" id="tab_d">
+                                 <h4>Pane D</h4>
+                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+                                    ac turpis egestas.</p>
+                            </div>
+                    </div><!-- tab content -->
+
+                </div>
+                <div class="tab-pane fade" id="category">
+                  <p>Categories</p>
+                </div>
+                <div class="tab-pane fade" id="product">
+                  <p>Products</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6"><!-- col-lg-6 -->
+            <h2 id="nav-tabs">Tabs</h2>
+
+          </div><!-- col-lg-6 -->
+
+        </div><!-- row -->
+
+<script type="text/javascript">
+$(function(){
+
+    $('#save-stock').attr('disabled',true);
+
+    //when a value is entered to update the stock
+    $('#rep-stock').on('keyup', function (e) {
+        //match a positive integer/number
+        var intregex2 = /^\+?(0|[1-9]\d*)$/;
+        var updateStock=0;
+        if ($(this).val() == ''){
+            $('#total-stock-rep').val('Enter amount');
+            $('#save-stock').attr('disabled',true);
+        }else if(!intregex2.test($(this).val())){
+            $('#total-stock-rep').val('Must be a number');
+            $('#save-stock').attr('disabled',true);
+        }else{
+            var enteredStock = parseInt($('#rep-stock').val());
+            var currentStock = parseInt($('#current-stock').val());
+            $('#total-stock').val(enteredStock+currentStock);
+            $('#total-stock-rep').val(enteredStock+currentStock);
+            $('#save-stock').attr('disabled',false);
+        }
+        //var entered-stock = $('#rep-stock').val();
+
+    });
+
+
+    //on form submission by clicking the save-stock button
+    $('#save-stock').on('click', function (event) { // catch the form's submit event
+      event.preventDefault();
+      //alert('heheh');
+      $.ajax({ // create an AJAX call...
+          data: $('#stock-form').serialize(), // get the form data
+          type: 'POST', // GET or POST
+          url: '/pos_app/stock_update/', // the file to call
+          success: function(response) { // on success..
+              $('#stock_update-messages').html(response); // update the DIV
+          },
+          error: function(response) { // on error..
+              $('#stock_update-messages').html(response); // update the DIV
+          }
+      });
+      //return false;
+
+    });
+
+});
+</script>
+
+<script>
+$(document).ready(function(){
+    $("#toggle-btn").click(function(){
+        $("#toggle-example").collapse('toggle');
+    });
+});
+</script>
+
+<script type="text/javascript">
+//once the DOM is ready
+//$(document).ready(function() {
+   $.ajax({ // create an AJAX call...
+      //data: $('#tax-form').serialize(), // get the form data
+      type: 'GET', // GET or POST
+      url: '/pos_app/store/', // the file to call
+      //dataType:'json',
+      success: function(response) { // on success..
+          $('#out-ofstock,out-ofstock-list').html(response);, // update the DIV
+      },
+      error: function(response) { // on error..
+          $('#out-ofstock').html(response); // update the DIV
+      }
+  });
+  //return false;
+//});
+</script>
+{% endblock %}

@@ -1,0 +1,250 @@
+
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Taxation <small>Tax Statistics Overview</small></h1>
+            <ol class="breadcrumb">
+              <li class="active"><i class="fa fa-dashboard"></i> Tax Dashboard</li>
+            </ol>
+            <!--<div class="alert alert-success alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              Welcome to SB Admin by <a class="alert-link" href="http://startbootstrap.com">Start Bootstrap</a>! Feel free to use this template for your admin needs! We are using a few different plugins to handle the dynamic tables and charts, so make sure you check out the necessary documentation links provided.
+            </div>-->
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-comments fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">456</p>
+                    <p class="announcement-text">New Mentions!</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      View Mentions
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-check fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">12</p>
+                    <p class="announcement-text">To-Do Items</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      Complete Tasks
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="panel panel-danger">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-tasks fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">18</p>
+                    <p class="announcement-text">Crawl Errors</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      Fix Issues
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="panel panel-success">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-comments fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">56</p>
+                    <p class="announcement-text">New Orders!</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      Complete Orders
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-6"><!--col-lg-6 -->
+              <div class="panel panel-primary"><!--panel -->
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Tax Categories Registration</h3>
+                  </div>
+                  <div class="panel-body"><!--panel-body -->
+                    <!--displays the error or warning messages-->
+                    <div id="tax-messages">
+
+                    </div>
+                    <form id="tax-form" action="/pos_app/tax_registration/" method="post">
+                        {% csrf_token %}
+                        {{ tax_form.as_p }}
+                        <button type="button" class="btn btn-primary" id="tax-reg-btn">Submit</button>
+                    </form>
+                  </div> <!-- panel-body -->
+                  <div class="panel-footer"><!--panel-footer -->
+                    <h5 class="text-info">Contains the Tax Registration Form</h5>
+                  </div><!-- panel footer -->
+              </div><!-- panel-->
+
+          </div><!--col-lg-6 -->
+          <div class="col-lg-6">
+              <div class="panel panel-primary"><!--panel -->
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Tax Registered Categories</h3>
+                  </div>
+                  <div class="panel-body" id="tax-categories-results"><!--panel-body -->
+
+                  </div> <!-- panel-body -->
+                  <div class="panel-footer"><!--panel-footer -->
+                    <h5 class="text-info">Contains the types of Registered tax categories</h5>
+                  </div><!-- panel footer -->
+              </div><!-- panel-->
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="panel panel-primary"><!--panel -->
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Tax Collections</h3>
+                  </div>
+                  <div class="panel-body" id="tax-collections"><!--panel-body -->
+
+
+
+                  </div> <!-- panel-body -->
+                  <div class="panel-footer"><!--panel-footer -->
+                    <h5 class="text-info">Contains the total taxes collected</h5>
+                  </div><!-- panel footer -->
+              </div><!-- panel-->
+          </div>
+        </div><!-- /.row -->
+
+
+
+
+
+<script type="text/javascript">
+
+//once the DOM is ready
+$(document).ready(function() {
+
+   $.ajax({ // create an AJAX call...
+      data: $('#tax-form').serialize(), // get the form data
+      type: 'GET', // GET or POST
+      url: '/pos_app/get_tax_categories/', // the file to call
+      //dataType:'json',
+      success: function(response) { // on success..
+          $('#tax-categories-results').html(response); // update the DIV
+      },
+      error: function(response) { // on error..
+          $('#tax-categories-results').html(response); // update the DIV
+      }
+  });
+  //return false;
+
+    var request = $.ajax({
+            type: "GET",
+            url: "/pos_app/paginate_test/"
+            /*data:{
+                'startDate': $("#fromDatePicker").val(),
+                'stopDate': $("#toDatePicker").val()
+            }*/
+    });
+    request.done(function(prodList){
+        $("#tax-collections").html(prodList);
+    });
+
+});
+
+//if the button for posting tax categories is clicked
+$('#tax-reg-btn').click( function(event) { // catch the form's submit event
+    event.preventDefault();
+    $.ajax({ // create an AJAX call...
+        data: $('#tax-form').serialize(), // get the form data
+        type: $('#tax-form').attr('method'), // GET or POST
+        url: $('#tax-form').attr('action'), // the file to call
+        //dataType:'json',
+        success: function (response) { // on success..
+            $('#tax-messages').html(response); // update the DIV
+        },
+        error: function (response) { // on error..
+            $('#tax-messages').html(response); // update the DIV
+        }
+    });
+    return false;
+});
+
+</script>
+
+
+
+
+
+
+{% endblock %}

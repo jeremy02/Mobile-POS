@@ -1,0 +1,75 @@
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+<!--{% block title %}{{ category_name }}{% endblock %}-->
+{% block body_block %}
+
+
+<div class="row">
+    <div class="col-lg-12">
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> Register</h3>
+              </div>
+              <div class="panel-body">
+
+                  <div class="col-lg-12">
+                    <h2>Register</h2>
+                    {% if registered %}
+                    <p>Thank you for registering.</p>
+
+                    <p><a href="/rango/login/">Login</a> when you are ready to rango.</p>
+                    {% else %}
+                    <form class="form-signin span8" id="user_form" method="post" action="/pos_app/register/"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h2 class="form-signin-heading">Sign up Here</h2>
+                        <!-- Display each form here -->
+
+                        {% for field in user_form.visible_fields %}
+                        <div class="form-group">
+                            <label>{{ field.help_text }}</label>
+                            {{ field }}
+                            <p class="help-block">{{ field.errors }}</p>
+                        </div>
+                        {% endfor %}
+
+                        {% for field in profile_form.visible_fields %}
+                        <div class="form-group">
+                            <label>{{ field.help_text }}</label>
+                            {{ field }}
+                            <p class="help-block">{{ field.errors }}</p>
+                        </div>
+                        {% endfor %}
+
+                        <br />
+                        <!-- Provide a button to click to submit the form. -->
+                        <input class="btn btn-primary" type="submit" name="submit" value="Register"/>
+                    </form>
+                    {% endif %}
+
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> Categories</h3>
+              </div>
+              <div class="panel-body">
+
+                  <div class="col-lg-12">
+                    <h2>List Of Categories</h2>
+
+                  </div>
+
+              </div>
+            </div>
+          </div>
+    </div>
+</div><!-- /.row -->
+{% endblock %}

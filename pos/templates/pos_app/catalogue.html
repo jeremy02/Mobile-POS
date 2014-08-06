@@ -1,0 +1,230 @@
+
+{% extends 'pos_app/base.html' %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
+    <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <!--<i class="fa fa-comments fa-5x"></i>-->
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">{{ category_number }}</p>
+                    <p class="announcement-text">New Catalogues!</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      View New Catalogues
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <!--<i class="fa fa-check fa-5x"></i>-->
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="announcement-heading">12</p>
+                    <p class="announcement-text">Total Catalogues</p>
+                  </div>
+                </div>
+              </div>
+              <a href="#">
+                <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      View All Catalogues
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Catalogue Management<!--<small>Enter New User</small>--></h1>
+            <div class="col-lg-6">
+                <ol class="breadcrumb">
+                  <li><a href="index.html"><i class="fa fa-dashboard"></i>Catalogues</a></li>
+                  <li class="active"><i class="fa fa-edit"></i> Add New Catalogue Form</li>
+                </ol>
+            </div>
+            <!--
+            <div class="alert alert-info alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              Visit <a class="alert-link" target="_blank" href="http://getbootstrap.com/css/#forms">Bootstrap's Form Documentation</a> for more information.
+            </div>
+            -->
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-6">
+          {% if catalogue_added %}
+            <div class="alert alert-info alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <strong>A new Catalogue has been added.</strong>
+              <!--<p><a href="/pos_app/add_person/">Add Another User</a> when you are ready.</p>.
+              <p><a href="/pos_app/login/">Log In</a> when you are ready.</p>.-->
+            </div>
+
+
+            {% else %}
+
+            <form role="form" id="catalogue_form" method="post" action="/pos_app/add_catalogue/">
+
+                {% csrf_token %}
+                <!--<div class="alert alert-info alert-dismissable">
+                    {% for field in form.visible_fields %}
+                        {{ field.errors }}
+                    {% endfor %}
+                </div>-->
+
+                {% for hidden in form.hidden_fields %}
+                <div class="form-group">
+                <label>{{ field.help_text }}</label>
+                    <!--{{ field.errors }}-->
+                    {{ hidden }}
+                <!--<p class="help-block">{{ field.help_text }}</p>-->
+                </div>
+                {% endfor %}
+
+              <div class="form-group">
+                <label>Catalogue Name</label>
+                <!--<label>{{ form.catalogue_name.errors }}</label>-->
+                {{ form.catalogue_name }}
+                <p class="help-block">{{ form.catalogue_name.errors }}</p>
+              </div>        
+
+
+              <button type="submit" class="btn btn-default">Add New Catalogue</button>
+
+            </form>
+            {% endif %}
+
+          </div>
+          <div class="col-lg-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-clock-o"></i>Recent Catalogue Activity</h3>
+              </div>
+              <div class="panel-body">
+              {% if catalogues %}
+                <div class="list-group">
+                {% for category in catalogues %}
+                  <a href="#" class="list-group-item">
+                    <span class="badge">{{category.date_added}}
+                    </span>
+                    <i class="fa fa-check"></i> {{category.catalogue_name}}
+                  </a>
+                  {% endfor %}
+                  
+                  {% else %}
+                  <a href="#" class="list-group-item">
+                    <span class="badge">As of Now</span>
+                    <i class="fa fa-check "></i> There are no catalogues
+                  </a>
+                  
+                  {% endif %}
+                  
+                </div>
+                <div class="text-right">
+                  <a href="#">View All Catalogue Activity <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+          <div class="col-lg-12">                   <!--start the column class-->
+            <div class="panel panel-primary">       <!--start the primary panel class-->
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> Catalogues</h3>
+              </div>
+              <div class="panel-body">              <!--start the panel body class-->
+
+                  <!--<div class="col-lg-12">-->           <!--start the column class-->
+                    <h2>List Of Catalogues</h2>
+
+                    {% if catalogues %}
+
+                    <div class="table-responsive"><!--start the table responsive class-->
+                      <table class="table table-bordered table-hover table-striped tablesorter">
+                        <thead>
+                          <tr>
+                            <th><div class="checkbox"><input type="checkbox" value=""></div></i></th>
+                            <th>Catalogue Number <i class="fa fa-sort"></i></th>
+                            <th>Catalogue Name <i class="fa fa-sort"></i></th>
+                            <th> Date Added <i class="fa fa-sort"></i></th>
+                            <th colspan="4">Action <i class="fa fa-sort"></i></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for category in catalogues %}
+
+                          <tr>
+                            <td><div class="checkbox"><input type="checkbox" value=""></div></td>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.catalogue_name }}</td>
+                            <td>{{ category.date_added }}</td>
+                            <td>
+                                <div class="text-right">
+                                <!--<a href="/pos_app/catalogue/{{ catalogue.url }}">{{ catalogue.catalogue_name }}</a>-->
+                                <a href="/pos_app/catalogue/{{ catalogue.url }}">Edit {{ category.catalogue_name }} <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                <a href="#">Delete Catalogue <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                <!--<a >{{ category.catalogue_name }}</a>-->
+                                <a href="/pos_app/catalogue/{{ category.url }}">Add New Category <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            </td>
+                          </tr>
+
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>              <!--end  the table responsive class-->
+                    {% else %}
+                      <a href="#" class="list-group-item">
+                        <span class="badge">As of Now</span>
+                        <i class="fa fa-user"></i> There are no catalogues
+                      </a>
+
+                    {% endif %}
+                  <!--</div>-->                <!--end the column class-->
+
+
+              </div>                    <!--end the panel body class-->
+            </div>                      <!--end the primary panel class-->
+          </div>                        <!--end the column class-->
+        </div><!-- /.row -->
+{% endblock %}
