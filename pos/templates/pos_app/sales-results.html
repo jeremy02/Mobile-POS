@@ -8,157 +8,192 @@
 
 {% if sales_results_success %}
 
-    <!--<ul class="nav nav-tabs ">  -->
-        <ul class="nav nav-pills nav-stacked col-lg-2 col-md-2">
-          {% for i in sales_list%}
-            {% if forloop.first %}
-                <li class="active"><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
-            {% else %}
-                <li><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
-            {% endif %}
-          {% endfor%}
-        </ul>
+     <!--<ul class="nav nav-tabs ">  -->
+<div class="row">
+    <div class="panel panel-default col-lg-2 col-md-2">
+    <div class="panel-body">
+        Sale No
+      </div>
+    </div>
 
-        <div id="tab-content" class="tab-content col-lg-10 col-md-10"><!--tab-content -->
+    <div class="panel panel-success col-lg-4 col-md-4">
+      <div class="panel-body">
+        Sale Summarry
+      </div>
+    </div>
 
-            {% for i in sales_list%}
-              {% if forloop.first %}<!--if its the first item in the loop -->
-                    <div class="tab-pane fade active in" id="{{i.transaction}}">  <!--tab-pane -->
-                        <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
-                        <div class="list-group"><!--list-group -->
-                            <a href="#" class="list-group-item">
-                                Total Total <span class="badge">{{ i.totalsale }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Tax <span class="badge">{{ i.totaltax }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Net <span class="badge">{{ i.totalnet }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Date <span class="badge">{{ i.date_added|date:'Y/m/d' }}</span>
-                            </a>
-                        </div><!--list-group -->
-                        </div><!--bs-example -->
+    <div class="panel panel-success col-lg-6 col-md-6">
+      <div class="panel-body">
+        <span class="text-info pull-right">Product Sold in this Transaction</span>
+      </div>
+    </div>
+</div>
 
-                        <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
+<div class="row">
+    <ul class="nav nav-pills nav-stacked col-lg-2 col-md-2">
+      {% for i in sales_list%}
+        {% if forloop.first %}
+            <li class="active"><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
+        {% else %}
+            <li><a href="#{{i.transaction}}" data-toggle="pill">Sale No: <span class="badge pull-right">{{i.transaction}}</span> </a></li>
+        {% endif %}
+      {% endfor%}
+    </ul>
 
-                            <table class="table">
-                                <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
-                                <thead>
-                                  <tr>
-                                    <th>Product Name</th>
-                                    <th>Subtotal</th>
-                                    <th>Tax Amt</th>
-                                    <th>Net Amt</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                {% for item in i.sales_line_item_set.all %}
-                                <tr>
-                                    <td>{{  item.product.product_name }}</td>
-                                    <td>{{  item.subtotal }}</td>
-                                    <td>{{ item.tax_amount }}</td>
-                                    <td>{{ item.net_total }}</td>
-                                </tr>
-                                {% endfor %}
-                                <tr class="active">
-                                    <td>Totals</td>
-                                    <td>{{ i.totalsale }}</td>
-                                    <td>{{ i.totaltax }}</td>
-                                    <td>{{ i.totalnet }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
+    <div id="tab-content" class="tab-content col-lg-10 col-md-10"><!--tab-content -->
 
-                        </div><!--bs-example -->
+        {% for i in sales_list%}
+          {% if forloop.first %}<!--if its the first item in the loop -->
+                <div class="tab-pane fade active in" id="{{ i.transaction }}">  <!--tab-pane -->
+                    <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
+                    <div class="list-group"><!--list-group -->
+                        <a href="#" class="list-group-item">
+                            Total Total <span class="badge">{{ i.totalsale }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Tax <span class="badge">{{ i.totaltax }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Net <span class="badge">{{ i.totalnet }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Date <span class="badge">{{ i.date_added|date:'Y/m/d H:i' }}</span>
+                        </a>
+                    </div><!--list-group -->
+                    </div><!--bs-example -->
 
-                    </div> <!--tab-pane -->
-              {% else %} <!--if its other items in the loop -->
-                    <div class="tab-pane fade in" id="{{i.transaction}}"> <!--tab-pane -->
-                        <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
-                        <div class="list-group"><!--list-group -->
-                            <a href="#" class="list-group-item">
-                                Total Total <span class="badge">{{ i.totalsale }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Tax <span class="badge">{{ i.totaltax }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Net <span class="badge">{{ i.totalnet }}</span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                Total Date <span class="badge">{{ i.date_added|date:'Y/m/d' }}</span>
-                            </a>
-                        </div><!--list-group -->
-                        </div><!--bs-example -->
+                    <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
 
-                        <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
-                            <table class="table">
-                                <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
-                                <thead>
-                                  <tr>
-                                    <th>Product Name</th>
-                                    <th>Subtotal</th>
-                                    <th>Tax Amt</th>
-                                    <th>Net Amt</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                {% for item in i.sales_line_item_set.all %}
-                                <tr>
-                                    <td>{{  item.product.product_name }}</td>
-                                    <td>{{  item.subtotal }}</td>
-                                    <td>{{ item.tax_amount }}</td>
-                                    <td>{{ item.net_total }}</td>
-                                </tr>
-                                {% endfor %}
-                                <tr class="active">
-                                    <td>Totals:</td>
-                                    <td>{{ i.totalsale }}</td>
-                                    <td>{{ i.totaltax }}</td>
-                                    <td>{{ i.totalnet }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div><!--bs-example -->
+                        <table class="table">
+                            <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
+                            <thead>
+                              <tr>
+                                <th>Product Name</th>
+                                <th>Subtotal</th>
+                                <th>Tax Amt</th>
+                                <th>Net Amt</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in i.sales_line_item_set.all %}
+                            <tr>
+                                <td>{{  item.product.product_name }}</td>
+                                <td>{{  item.subtotal }}</td>
+                                <td>{{ item.tax_amount }}</td>
+                                <td>{{ item.net_total }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="active">
+                                <td>Totals</td>
+                                <td>{{ i.totalsale }}</td>
+                                <td>{{ i.totaltax }}</td>
+                                <td>{{ i.totalnet }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-                    </div> <!--tab-pane -->
-              {% endif %}
+                    </div><!--bs-example -->
 
-            {% endfor%}
-        </div> <!--tab-content -->
+                </div> <!--tab-pane -->
+          {% else %} <!--if its other items in the loop -->
+                <div class="tab-pane fade in" id="{{i.transaction}}"> <!--tab-pane -->
+                    <div class="bs-example col-lg-5 col-md-5"><!--bs-example -->
+                    <div class="list-group"><!--list-group -->
+                        <a href="#" class="list-group-item">
+                            Total Total <span class="badge">{{ i.totalsale }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Tax <span class="badge">{{ i.totaltax }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Net <span class="badge">{{ i.totalnet }}</span>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            Total Date <span class="badge">{{ i.date_added|date:'Y/m/d H:i' }}</span>
+                        </a>
+                    </div><!--list-group -->
+                    </div><!--bs-example -->
+
+                    <div class="bs-example col-lg-7 col-md-7"><!--bs-example -->
+                        <table class="table">
+                            <caption>Products Sold in Sale No:{{ i.transaction }}</caption>
+                            <thead>
+                              <tr>
+                                <th>Product Name</th>
+                                <th>Subtotal</th>
+                                <th>Tax Amt</th>
+                                <th>Net Amt</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in i.sales_line_item_set.all %}
+                            <tr>
+                                <td>{{  item.product.product_name }}</td>
+                                <td>{{  item.subtotal }}</td>
+                                <td>{{ item.tax_amount }}</td>
+                                <td>{{ item.net_total }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="active">
+                                <td>Totals:</td>
+                                <td>{{ i.totalsale }}</td>
+                                <td>{{ i.totaltax }}</td>
+                                <td>{{ i.totalnet }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div><!--bs-example -->
+
+                </div> <!--tab-pane -->
+          {% endif %}
+
+        {% endfor%}
+    </div> <!--tab-content -->
+</div>
 
 
 
-        <div class="text-center"> <!--pagination grid -->
+<div class="row"> <!--pagination grid -->
 
-        <ul class="pagination" id="sales-results_pagination"><!--pagination -->
+    <div class="panel panel-info"><!--panel-->
 
-            <li class="disabled">
-                <a href="javascript:void(0);">Page {{sales_list.number}} of {{ sales_list.paginator.num_pages }}.</a>
-            </li>
+        <div class="panel-heading"><!--panel body-->
 
-            {% if sales_list.has_previous %}
-                <li><a href="javascript:void(0);" page="{{ sales_list.previous_page_number }}">&laquo;</a></li>
-            {% endif %}
+            <div class="col-md-4 col-lg-4">
+                <h5>Total Pages <span class="label label-info">{{sales_list.paginator.num_pages}}</span></h5>
+            </div>
+            <div class="col-md-8 col-lg-8">
+                <ul class="pagination" id="sales-results_pagination"><!--pagination -->
 
-            {% for page in page_numbers %}
-                {% if page == sales_list.number %}
-                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
-                {% else %}
-                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
-                {% endif %}
-            {% endfor %}
+                    <li class="disabled">
+                        <a href="javascript:void(0);">Page {{sales_list.number}} of {{ sales_list.paginator.num_pages }}.</a>
+                    </li>
+
+                    {% if sales_list.has_previous %}
+                        <li><a href="javascript:void(0);" page="{{ sales_list.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+
+                    {% for page in page_numbers %}
+                        {% if page == sales_list.number %}
+                            <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                        {% else %}
+                            <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
 
 
-            {% if sales_list.has_next %}
-                <li><a href="javascript:void(0);" page="{{ sales_list.next_page_number }}">&raquo;</a></li>
-            {% endif %}
+                    {% if sales_list.has_next %}
+                        <li><a href="javascript:void(0);" page="{{ sales_list.next_page_number }}">&raquo;</a></li>
+                    {% endif %}
 
-        </ul><!--pagination -->
-        </div><!--pagination grid -->
+                </ul><!--pagination -->
+            </div>
+            <div class="clearfix"></div>
+        </div><!--panel body-->
+    </div><!--panel-->
 
+
+</div><!--pagination grid -->
 
 {% endif %}
 
@@ -169,6 +204,98 @@
         <span>{{ sales_results_warning }}</span>
     </div>
 {% endif %}
+
+{% if final_sales_error %}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ final_sales_error }}</span>
+    </div>
+{% endif %}
+
+{% if final_sales_warning %}
+    <div class="alert alert-dismissable alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ final_sales_warning }}</span>
+    </div>
+{% endif %}
+
+{% if final_sales_success %}
+    <ul class="nav nav-pills">
+          {% for i in category_list%}
+            {% if forloop.first %}
+                <li class="active"><a href="#{{i.id}}" data-toggle="pill">{{i.category_name}}</a></li>
+            {% else %}
+                <li><a href="#{{i.id}}" data-toggle="pill">{{i.category_name}}</a></li>
+            {% endif %}
+          {% endfor%}
+    </ul>
+
+    <div id="tab-content" class="tab-content"><!--tab-content -->
+
+            {% for i in category_list%}
+              {% if forloop.first %}<!--if its the first item in the loop -->
+                    <div class="tab-pane fade active in" id="{{ i.id }}">  <!--tab-pane -->
+
+                        <div class="row panel panel-green">
+                            <div class="panel-heading">{{i.category_name}}</div>
+                            <div class="panel-body">
+                                {% for product in i.product_set.all %}
+                                {% if i.quantity > 0 %}
+                                    <a class="btn btn-success" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}" style="color: #ffffff;"> {{product.product_name }} </a>
+                                {% else %}
+                                    <a href="btn btn-success" class="list-group-item">{{product.product_name }} <span class="badge">Not for Sale</span></a>
+                                {% endif %}
+
+
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+                    </div> <!--tab-pane -->
+              {% else %} <!--if its other items in the loop -->
+                    <div class="tab-pane fade in" id="{{i.id}}"> <!--tab-pane -->
+
+                        <div class="row panel panel-red">
+                            <div class="panel-heading">{{i.category_name}}</div>
+                            <div class="panel-body">
+                                {% for item in i.product_set.all %}
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-success">{{ item.product_name }}</button>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div> <!--tab-pane -->
+              {% endif %}
+
+            {% endfor%}
+    </div> <!--tab-content -->
+
+    <ul class="pager" id="product-items-pagination">
+
+        {% if category_list.has_previous %}
+            <li class="previous col-lg-4 col-md-4"><a href="javascript:void(0);" page="{{ category_list.previous_page_number }}">&larr;Previous</a></li>
+        {% endif %}
+
+
+        <li class="disabled col-md-4 col-md-4">
+            <a href="javascript:void(0);">Page {{category_list.number}} of {{ category_list.paginator.num_pages }}.</a>
+        </li>
+
+        {% if category_list.has_next %}
+            <li class="next col-lg-4 col-md-4"><a href="javascript:void(0);" page="{{ category_list.next_page_number }}">Next &rarr;</a></li>
+        {% endif %}
+
+    </ul><!--pagination -->
+
+
+
+{% endif %}
+<!--second search for sales -->
 
 <!--this handles the pagination -->
 <script type="text/javascript">

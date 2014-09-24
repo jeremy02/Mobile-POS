@@ -123,6 +123,81 @@
     </div>
 {% endif %}
 
+
+<!-- these are the tax results -->
+
+{% if tax_results_error %}
+    <div class="alert alert-dismissable alert-danger" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ tax_results_error }}</span>
+    </div>
+{% endif %}
+
+{% if tax_results_success %}
+        <div class="list-group">
+            {% for i in tax_list %}
+            <a href="javascript:void(0);" class="list-group-item clearfix">
+                <h4 class="list-group-item-heading">Tax Category: {{ i.tax_name }}</h4>
+                <p class="list-group-item-text">&nbsp;</p>
+                <p class="list-group-item-text">Tax Rate: {{ i.tax_rate }}%</p>
+                <p class="list-group-item-text">&nbsp;</p>
+                <span class="label label-success">Date Added:{{ i.date_added }}</span>
+                <span class="pull-right">
+                    <span class="text-info">Action: </span>
+                    <button type="button" title="Edit {{ i.tax_name }}" data-placement='top' class="btn btn-info btn-circle">
+                        <i class="fa fa-pencil fa-spin"></i>
+                    </button>
+                    <button type="button" title="Delete {{ i.tax_name }}" data-placement='left'  class="btn btn-danger btn-circle">
+                        <i class="fa fa-trash-o fa-spin"></i>
+                    </button>
+
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="text-center"> <!--pagination grid -->
+
+        <ul class="pagination" id="tax_list_pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{tax_list.number}} of {{ tax_list.paginator.num_pages }}.</a>
+            </li>
+
+            {% if tax_list.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ tax_list.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in page_numbers %}
+                {% if page == tax_list.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if tax_list.has_next %}
+                <li><a href="javascript:void(0);" page="{{ tax_list.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+        </div><!--pagination grid -->
+
+{% endif %}
+
+{% if tax_results_warning %}
+    <div class="alert alert-dismissable alert-warning" id="pos_messages">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ tax_results_warning }}</span>
+    </div>
+{% endif %}
+
+
+<!-- this is the end of the tax results -->
+
 <script type="text/javascript">
 $(function() {
     //$('#pos_messages').fadeIn(1500).delay(3500);//.fadeOut(1500);
@@ -134,9 +209,14 @@ $(function() {
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+    $('button').tooltip();
+});
+</script>
+
 <!--this handles the pagination -->
 <script type="text/javascript">
-
 $('.pagination li a').click( function() {
    var page =  $(this).attr('page');
    $.ajax({ // create an AJAX call...
@@ -150,9 +230,21 @@ $('.pagination li a').click( function() {
           $('#tax-collections').html(response); // update the DIV
       }
   });
-
 });
 
+<!--this handles the pagination for the tax categories -->
+$('#tax_list_pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({
+      data:{'page': page},
+      type: 'GET',
+      url: '/pos_app/get_tax_categories/',
+      success: function(response) {
+          $('#tax-categories-results').html(response);
+      },
+      error: function(response) {
+          $('#tax-categories-results').html(response);
+      }
+  });
+});
 </script>
-
-

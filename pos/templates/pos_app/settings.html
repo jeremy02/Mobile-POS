@@ -1,0 +1,266 @@
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h3>Settings<!--<small>Enter New User</small>--></h3>
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                  <li><a href="index.html"><i class="fa fa-dashboard"></i>Settings</a></li>
+                  <li class="active"><i class="fa fa-edit"></i>Edit settings</li>
+                </ol>
+            </div>
+
+            <!--<div class="col-lg-5">
+
+                <div class="breadcrumb">
+                    <small>Detailed Reports</small>
+
+                </div>
+
+            </div>-->
+          </div><!-- /col-lg-12 -->
+        </div><!-- /.row -->
+
+        <div class="row">
+            <ul class="nav nav-pills nav-stacked col-md-2 col-lg-2">
+              <li><a href="#tab_a" data-toggle="tab">Tax Settings</a></li>
+              <li><a href="#tab_b" data-toggle="tab">Payments Settings</a></li>
+              <li><a href="#tab_c" data-toggle="tab">Other Setting</a></li>
+            </ul>
+
+            <div class="tab-content col-md-10 col-lg-10">
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane active" id="tab_a"><!--tab-pane tab_a-->
+                        <div class="row">
+                        <div class="col-lg-6"><!--col-lg-6 -->
+                          <div class="panel panel-red"><!--panel -->
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Tax Categories Registration</h3>
+                              </div>
+                              <div class="panel-body"><!--panel-body -->
+                                <!--displays the error or warning messages-->
+                                <div id="tax-messages">
+
+                                </div>
+                                <form id="tax-form" action="/pos_app/settings_post/" method="post">
+                                    {% csrf_token %}
+                                    {{ tax_form.as_p }}
+                                    <button type="button" class="btn btn-primary" id="tax-reg-btn">Submit</button>
+                                </form>
+                              </div> <!-- panel-body -->
+                              <div class="panel-footer"><!--panel-footer -->
+                                <h5 class="text-info">Contains the Tax Registration Form</h5>
+                              </div><!-- panel footer -->
+                          </div><!-- panel-->
+
+                        </div><!--col-lg-6 -->
+                        <div class="col-lg-6">
+                          <div class="panel panel-green"><!--panel -->
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Tax Registered Categories</h3>
+                              </div>
+                              <div class="panel-body" id="tax-categories-results"><!--panel-body -->
+
+                              </div> <!-- panel-body -->
+                              <div class="panel-footer"><!--panel-footer -->
+                                <h5 class="text-info">Contains the types of Registered tax categories</h5>
+                              </div><!-- panel footer -->
+                          </div><!-- panel-->
+                        </div>
+                        </div><!-- /.row -->
+                    </div><!--tab-pane tab_a-->
+                    <!-- /.tab-pane -->
+
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_b"><!--tab-pane tab_b-->
+
+                        <div class="col-lg-6"><!--col-lg-6 -->
+                          <div class="panel panel-red"><!--panel -->
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Payment Mode Registration</h3>
+                              </div>
+                              <div class="panel-body"><!--panel-body -->
+                                <!--displays the error or warning messages-->
+                                <div id="payment-messages">
+
+                                </div>
+                                <form id="payment-form">
+                                    {% csrf_token %}
+                                    {{ payment_form.as_p }}
+                                    <button type="button" class="btn btn-primary" id="payment-reg-btn">Save</button>
+                                </form>
+                              </div> <!-- panel-body -->
+                              <div class="panel-footer"><!--panel-footer -->
+                                <h5 class="text-info">Register the Mode of Payments to be Supported</h5>
+                              </div><!-- panel footer -->
+                          </div><!-- panel-->
+
+                        </div><!--col-lg-6 -->
+                        <div class="col-lg-6">
+                          <div class="panel panel-green"><!--panel -->
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Registered Payment Modes</h3>
+                              </div>
+                              <div class="panel-body" id="payment-mode-results"><!--panel-body -->
+
+                              </div> <!-- panel-body -->
+                              <div class="panel-footer"><!--panel-footer -->
+                                <h5 class="text-info">Contains the Registered Payments Modes</h5>
+                              </div><!-- panel footer -->
+                          </div><!-- panel-->
+                        </div>
+
+                    </div><!--tab-pane tab_b-->
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_c"><!--tab-pane tab_c-->
+
+                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                          <span></span> <b class="caret"></b>
+                        </div>
+
+                        <div class="row" id="filter-results">
+
+                        </div>
+
+                    </div><!--tab-pane tab_c-->
+            </div><!-- tab content -->
+        </div>
+<script type="text/javascript">
+
+//once the DOM is ready
+$(document).ready(function() {
+    var delay = 5000; //5 seconds
+
+    setInterval(function (){
+       $.ajax({
+          type: 'GET',
+          url: '/pos_app/get_tax_categories/',
+          success: function(response) {
+              $('#tax-categories-results').html(response);
+          },
+          error: function(response) {
+              $('#tax-categories-results').html(response);
+          }
+      });
+    }, delay);
+    //as you type into these inputs capitalize the first chararacter
+    $('#tax-name,#tax_code,#payment_name').on("keyup", function(event) {
+        name = $(this).val();
+        name = name.toLowerCase().replace(/\b[a-z]/g, function (firstletter) {
+            return firstletter.toUpperCase();
+        });
+        $(this).val(name);
+    });
+
+    //if the button for posting payment modes is clicked
+    $('#payment-reg-btn').on( "click", function() {
+        $.ajax({
+            data: $('#payment-form').serialize(),
+            type: 'POST',
+            url: '/pos_app/settings_post/',
+            success: function (response) {
+                $('#payment-messages').html(response);
+            },
+            error: function (response) {
+                $('#payment-messages').html(response);
+            }
+        });
+    });
+
+    //if the button for posting tax categories is clicked
+    $('#tax-reg-btn').on("click", function(event) {
+        $.ajax({
+            data: $('#tax-form').serialize(),
+            type: $('#tax-form').attr('method'),
+            url: $('#tax-form').attr('action'),
+            success: function (response) {
+                $('#tax-messages').html(response);
+            },
+            error: function (response) {
+                $('#tax-messages').html(response);
+            }
+        });
+        return false;
+    });
+
+    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+        /*console.log("apply event fired, start/end dates are "
+          + picker.startDate.format('MMMM D, YYYY')
+          + " to "
+          + picker.endDate.format('MMMM D, YYYY')
+        );*/
+        var startDate = picker.startDate.format('YYYY-MM-DD');
+        var endDate = picker.endDate.format('YYYY-MM-DD');
+
+        $.ajax({
+          type: 'GET',
+          data:{'startDate':startDate,'endDate':endDate},
+          url: '/pos_app/filter_test/',
+          success: function(response) {
+              $('#filter-results').html(response);
+          },
+          error: function(error){
+            $('#filter-results').html(error);
+          }
+        });
+    });
+});
+
+</script>
+
+
+<script type="text/javascript">
+$('#reportrange span').html(moment().subtract(0, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+$('#reportrange').daterangepicker(
+    {
+        startDate: moment().subtract(0, 'days'),
+        endDate: moment(),
+        minDate: '01/01/2012',
+        maxDate: [moment(), moment()],
+        dateLimit: { days: 60 },
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'left',
+        buttonClasses: ['btn btn-default'],
+        applyClass: 'btn-small btn-success',
+        cancelClass: 'btn-small',
+        format: 'MM/DD/YYYY',
+        separator: ' to ',
+        locale: {
+            applyLabel: 'Submit',
+            cancelLabel: 'Clear',
+            fromLabel: 'From',
+            toLabel: 'To',
+            customRangeLabel: 'Custom',
+            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay: 1
+        }
+    },
+    function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+    }
+);
+</script>
+{% endblock %}

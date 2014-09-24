@@ -7,6 +7,8 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+#newly added tuple
+from os.path import dirname, join
 
 import os
 SETTINGS_DIR = os.path.dirname(__file__)
@@ -23,13 +25,23 @@ TEMPLATE_DIRS = (
     TEMPLATE_PATH,
 )
 
-STATIC_PATH = os.path.join(PROJECT_PATH,'static')
-
+STATIC_PATH = os.path.join(PROJECT_PATH,'static/')
 STATIC_URL = '/static/' # You may find this is already defined as such.
 
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
+
+
+#newly added tuple
+"""BASE_DIR = dirname(dirname(__file__)) # Be sure this matches your base directory (if you didn't change the default position of your settings.py it will)
+MEDIA_ROOT = join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MAX_UPLOAD_SIZE = 20971520 # 20MB
+CONTENT_TYPES = ['application/pdf', 'image/jpeg', 'image/png'] # .pdf, .jpeg and .png
+"""
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #import os
@@ -106,6 +118,8 @@ DATABASES = {
     }
 }
 
+
+#MEDIA_ROOT = '/home/thuku/code/pos/static/'
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 

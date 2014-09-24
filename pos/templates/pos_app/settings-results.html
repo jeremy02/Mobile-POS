@@ -1,0 +1,23 @@
+{% if settings_warning %}
+    <div class="alert alert-dismissable alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ settings_warning }}</span>
+    </div>
+{% endif %}
+
+{% if settings_success %}
+    <div class="alert alert-dismissable alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <span>{{ settings_success }}</span>
+    </div>
+{% endif %}
+
+{% if settings_error %}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ settings_error }}</span>
+    </div>
+{% endif %}

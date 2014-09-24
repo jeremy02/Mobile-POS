@@ -1,0 +1,470 @@
+<!-- for all sales reports -->
+{% if sales_warning  %}
+    <div class="alert alert-dismissable alert-warning">
+        <span>{{ sales_warning }} </span>
+    </div>
+{% endif %}
+
+{% if sales_success  %}
+
+ <div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped" id="all-sales-reports-table">
+            <thead>
+                <tr>
+                    <th>Sale #</th>
+                    <th>Sold By #</th>
+                    <th>Total Net</th>
+                    <th>Total Tax</th>
+                    <th>Total Sale</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in sales %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.users.user.username }}</td>
+                    <td>{{ item.totalnet }}</td>
+                    <td>{{ item.totaltax }}</td>
+                    <td>{{ item.totalsale }}</td>
+                    <td>{{ item.date_added|date:"d M-Y" }}</td>
+                    <td><button type="button" class="btn btn-success">View Details</button></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button type="button" class="btn btn-success">View Details</button></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="col-lg-12"> <!--pagination grid -->
+
+    <div class="col-md-4 col-lg-4 pull-left">
+        <p class="label label-info">Total Count{{sales.paginator.num_pages}}</p>
+    </div>
+    <div class="col-md-8 col-lg-8 pull-right">
+        <ul class="pagination" id="all-sales-reports-pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{sales.number}} of {{ sales.paginator.num_pages }}.</a>
+            </li>
+
+            {% if sales.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ sales.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in page_numbers %}
+                {% if page == sales.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if sales.has_next %}
+                <li><a href="javascript:void(0);" page="{{ sales.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+    </div>
+</div><!--pagination grid -->
+
+{% endif %}
+
+<!-- for all sales reports by product -->
+{% if sales_by_product_success  %}
+<div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Total Net</th>
+                    <th>Total Tax</th>
+                    <th>Total Sale</th>
+                    <th>Quantity Sold</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in results %}
+                <tr>
+                    <td>{{  item.product__product_name }}</td>
+                    <td>{{  item.net }}</td>
+                    <td>{{ item.tax }}</td>
+                    <td>{{ item.total }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>View More</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="col-lg-12"> <!--pagination grid -->
+
+    <div class="col-md-4 col-lg-4 pull-left">
+        <p class="label label-info">Total Count {{results.paginator.num_pages}}</p>
+    </div>
+    <div class="col-md-8 col-lg-8 pull-right">
+        <ul class="pagination" id="sales-by-product-reports-pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{results.number}} of {{ results.paginator.num_pages }}.</a>
+            </li>
+
+            {% if results.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ results.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in page_numbers %}
+                {% if page == results.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if results.has_next %}
+                <li><a href="javascript:void(0);" page="{{ results.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+    </div>
+</div><!--pagination grid -->
+{% endif %}
+
+
+<!-- for all sales reports by user -->
+{% if sales_by_user_success  %}
+<div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>User No#</th>
+                    <th>Username</th>
+                    <th>Total Net</th>
+                    <th>Total Tax</th>
+                    <th>Total Sale</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in results %}
+                <tr>
+                    <td>{{ item.users__user__id }}</td>
+                    <td>{{ item.users__user__username }}</td>
+                    <td>{{ item.net }}</td>
+                    <td>{{ item.tax }}</td>
+                    <td>{{ item.total }}</td>
+                    <td>View More</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="col-lg-12"> <!--pagination grid -->
+
+    <div class="col-md-4 col-lg-4 pull-left">
+        <p class="label label-info">Total Count {{results.paginator.num_pages}}</p>
+    </div>
+    <div class="col-md-8 col-lg-8 pull-right">
+        <ul class="pagination" id="sales-by-user-reports-pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{results.number}} of {{ results.paginator.num_pages }}.</a>
+            </li>
+
+            {% if results.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ results.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in page_numbers %}
+                {% if page == results.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if results.has_next %}
+                <li><a href="javascript:void(0);" page="{{ results.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+    </div>
+</div><!--pagination grid -->
+{% endif %}
+
+{% if stock_open_close_success  %}
+
+ <div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Opening Stock</th>
+                    <th>Closing Stock</th>
+                    <th>Sold Stock</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in product_stock %}
+                <tr>
+                    <td>{{  item.product.product_name }}</td>
+                    <td>{{ item.opening_stock }}</td>
+                    <td>{{  item.quantity }}</td>
+                    <td>{{ item.sold_stock }}</td>
+                    <td>{{ item.date_out_of_stock|date:'D-M-Y' }}</td>
+                    <td>View More</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- for all payments reports -->
+{% if payments_warning  %}
+    <div class="alert alert-dismissable alert-warning">
+        <span>{{ payments_warning }} </span>
+    </div>
+{% endif %}
+
+{% if payments_success %}
+ <div class="col-lg-12">
+     <br/>
+ </div>
+ <div class="col-lg-8">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Sale No#</th>
+                    <th>Payment Mode</th>
+                    <th>Sale Amount</th>
+                    <th>Amount Paid</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in payments %}
+                <tr>
+                    <td>{{  i.sales.transaction }}</td>
+                    <td>{{ i.payment_mode.payment_name }}</td>
+                    <td>{{  i.sales.totalsale }}</td>
+                    <td>{{ i.amount_paid }}</td>
+                    <td><button type="button" class="btn btn-default">View Receipt</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+ </div>
+ <div class="col-lg-4">
+ </div>
+ <div class="col-lg-12"> <!--pagination grid -->
+
+    <div class="col-md-4 col-lg-4 pull-left">
+        <p class="label label-info">Total Count {{payments.paginator.num_pages}}</p>
+    </div>
+    <div class="col-md-8 col-lg-8 pull-right">
+        <ul class="pagination" id="sales-by-user-reports-pagination"><!--pagination -->
+
+            <li class="disabled">
+                <a href="javascript:void(0);">Page {{payments.number}} of {{ payments.paginator.num_pages }}.</a>
+            </li>
+
+            {% if payments.has_previous %}
+                <li><a href="javascript:void(0);" page="{{ payments.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+            <!--
+            {% for page in page_numbers %}
+                {% if page == results.number %}
+                    <li class="active"><a href="javascript:void(0);" page="{{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="javascript:void(0);" page="{{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            -->
+
+
+            {% if payments.has_next %}
+                <li><a href="javascript:void(0);" page="{{ payments.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+
+        </ul><!--pagination -->
+    </div>
+</div><!--pagination grid -->
+
+{% endif %}
+
+{% if payment_by_mode_success  %}
+
+    <div class="list-group col-lg-12 col-md-12">
+
+        <a href="#" class="list-group-item active">
+        <span class="badge">Amount</span>
+        Payment Mode
+        </a>
+
+
+        {% for i in paymentsList %}
+
+        <a class="list-group-item">
+            <span class="badge">{{ i.amount }}</span>
+            {{ i.payment_mode__payment_name }}
+        </a>
+
+        {% endfor %}
+    </div>
+    <div class="col-lg-12 col-md-12"><!--col-lg-12-->
+
+        {% for i in paymentsList %}
+
+        <div class="col-lg-4 col-md-4">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3 col-lg-3 col-lg-3">
+                            Kshs.{{ i.amount}}
+                            <i class="fa fa-money fa-2x"></i>
+                        </div>
+                        <div class="col-xs-9 col-lg-9 col-md-9 text-right">
+                            <div class="huge">&nbsp;</div>
+                            <div>{{ i.payment_mode__payment_name }}</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">{{ i.no_of_transactions}}</span>
+                        <span class="pull-right">Transactions</span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div><!--col-lg-12-->
+{% endif %}
+
+
+<!--this handles the pagination -->
+<script type="text/javascript">
+$(function() {
+
+//$('#all-sales-reports-table  tr:first td').each(function(){
+   //var $td = $(this);
+
+    /*var colTotal = 0;
+    $('#all-sales-reports-table tr:not(:first,.totalColumn)').each(function(){
+        colTotal  += parseInt($(this).children().eq($td.index()).html(),10);
+    });
+
+    $('#all-sales-reports-table tr.totalColumn').children().eq($td.index()).html('Total: ' + colTotal);*/
+//});
+/*$('#sum_table tr:first td').each(function(){
+   var $td = $(this);
+
+    var colTotal = 0;
+    $('#sum_table tr:not(:first,:last,.totalColumn)').each(function(){
+        colTotal  += parseInt($(this).children().eq($td.index()).html(),10);
+    });
+
+    $('#sum_table tr.totalColumn').children().eq($td.index()).html('Total: ' + colTotal);
+});*/
+});
+//pagination for all sales reports
+$('#all-sales-reports-pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({
+      data:{'page': page},
+      type: 'GET',
+      url: '/pos_app/all_sales_reports/',
+      success: function(response) { // on success..
+          $('#all-sales-reports').html(response).fadeOut('slow', function() {
+                $('#all-sales-reports').fadeIn('slow');
+          });
+      },
+      error: function(response) { // on error..
+          $('#all-sales-reports').html(response);
+      }
+  });
+
+});
+//pagination for sales reports by product
+$('#sales-by-product-reports-pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({
+      data:{'page': page},
+      type: 'GET',
+      url: '/pos_app/sales-by-product/',
+      success: function(response) { // on success..
+          $('#sales-by-product-reports').html(response).fadeOut('slow', function() {
+                $('#sales-by-product-reports').fadeIn('slow');
+          });
+      },
+      error: function(response) { // on error..
+          $('#sales-by-product-reports').html(response);
+      }
+  });
+
+});
+//pagination for sales reports by user
+$('#sales-by-product-reports-pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({
+      data:{'page': page},
+      type: 'GET',
+      url: '/pos_app/user_sales_reports/',
+      success: function(response) { // on success..
+          $('#sales-by-user-reports').html(response).fadeOut('slow', function() {
+                $('#sales-by-user-reports').fadeIn('slow');
+          });
+      },
+      error: function(response) { // on error..
+          $('#sales-by-user-reports').html(response);
+      }
+  });
+
+});
+</script>

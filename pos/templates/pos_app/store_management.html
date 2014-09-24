@@ -14,46 +14,27 @@
           </div>
         </div><!-- /.row -->
 
+
         <div class="row">
           <div class="col-lg-6">
             <div class="panel panel-danger"><!--panel-->
               <div class="panel-heading"> <!--panel heading-->
                 <h3 class="panel-title">Out of Stock</h3>
               </div><!--panel heading-->
-              <div class="panel-body" id="out-ofstock"><!--panel body-->
+              <div class="panel-body"><!--panel body-->
+                  <div class="list-group">
                     <a href="javascript:void(0);" class="list-group-item active">
                         Product Name <span class="badge">Date Out of Stock</span>
                     </a>
-                {% if general_error %}
-                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Error!</h4>
-                        <span>{{ general_error }}</span>
-                    </div>
-                {% endif %}
 
-                {% if general_success %}
-                    <!--<div class="alert alert-dismissable alert-info" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Sucess!</h4>
-                        <span>{{ general_success }}</span>
-                    </div>-->
-                  <!--loop through the out of stcck products -->
-                    {% if out_of_stock_list.count > 0 %}
-                        {% for item in out_of_stock_list %}
-                        <a class="list-group-item" href="javascript:void(0);" value="{{ item.id  }}"> {{ item.product.product_name }}
-                        <span class="badge">{{ item.date_out_of_stock }}</span></a>
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
-
-                {% if general_warning %}
-                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Warning!</h4>
-                        <span>{{ general_warning }}</span>
+                    <div id="out-of-stock-list">
+                        <div class="text-center" id="loading">
+                            <button class="btn btn-large btn-success"><i class="fa fa-refresh fa-spin fa-3x"></i> Loading...</button>
+                        </div>
                     </div>
-                {% endif %}
+                  </div>
+
+
               </div><!--panel body-->
               <div class="panel-footer"><!--panel footer-->
                 Shows the list of Products Out of Stock
@@ -67,86 +48,16 @@
               <div class="panel-heading"> <!--panel heading-->
                 <h3 class="panel-title">Replenish Stock <small class="pull-right">Almost Running Out of stock</small></h3>
               </div><!--panel heading-->
-              <div class="panel-body" id="out-ofstocklist"><!--panel body-->
+              <div class="panel-body" id="nearing-out-of-stock-list"><!--panel body-->
 
+                  <div class="text-center" id=loading>
+                    <button class="btn btn-large btn-success"><i class="fa fa-refresh fa-spin fa-3x"></i> Loading...</button>
+                  </div>
 
-                {% if general_error_2 %}
-                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Error!</h4>
-                        <span>{{ general_error }}</span>
-                    </div>
-                {% endif %}
+                  <!--<a class="text-center">
 
-                {% if general_success_2 %}
-                  {% if almost_out_of_stock_list.count > 0 %}
-                        {% for item in almost_out_of_stock_list %}
-                        <a href="javascript:void(0);" class="list-group-item">
-                            <h4 class="list-group-item-heading">{{ item.product.product_name }}</h4>
-                            </span> Remaining Items<span class="label label-danger pull-right">{{ item.quantity }}</span>
-                            <p class="list-group-item-text">
-                                <!-- Button trigger modal -->
-                                <!-- Small modal -->
+                  </a>-->
 
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#smallModal" id="testing">Add Stock</button>
-                                <div id="smallModal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
-                                    <div class="modal-dialog modal-sm">
-                                        <div class="modal-content"><!--modal content-->
-                                            <div class="modal-header"><!--modal header-->
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Add Stock to: <span class="text-info">{{ item.product.product_name }}</span></h4>
-                                            </div><!--modal header-->
-
-                                            <div class="modal-body"><!--modal body-->
-
-                                                <form role="form" id="stock-form">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="product-id" value="{{ item.product.id }}">
-                                                    <input type="hidden" name="total-stock" id="total-stock" class="form-control">
-
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">New Stock</span>
-                                                    <input type="text"  name="rep-stock" id="rep-stock" class="form-control" placeholder="Enter amount of stock" autofocus autocomplete="off">
-                                                  </div>
-
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">Current Stock</span>
-                                                    <input type="text" name="current-stock" id="current-stock" class="form-control" value="{{ item.quantity }}" disabled>
-                                                  </div>
-
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">Total Stock</span>
-                                                    <input type="text"  name="total-stock-rep" id="total-stock-rep" class="form-control" disabled>
-                                                  </div>
-
-                                                    <!--show error or success messages -->
-                                                  <div id="stock_update-messages"></div>
-                                                </form>
-                                            </div><!--modal body-->
-                                            <div class="modal-footer"><!--modal footer-->
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary" id="save-stock">Save</button>
-                                            </div><!--modal footer-->
-                                        </div><!--modal content-->
-                                    </div>
-                                </div><!--modal-->
-
-
-                            </p>
-
-                        </a>
-                        {% endfor %}
-                    {% endif %}
-
-                {% endif %}
-
-                {% if general_warning_2 %}
-                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Warning!</h4>
-                        <span>{{ general_warning_2 }}</span>
-                    </div>
-                {% endif %}
 
               </div><!--panel body-->
               <div class="panel-footer"><!--panel footer-->
@@ -157,66 +68,440 @@
         </div>
 
         <div class="row"><!-- row -->
-          <div class="col-lg-6">
-            <h2 id="nav-tabs">Tabs</h2>
-            <div class="bs-example">
-              <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-                <li class="active"><a href="#catalogue" data-toggle="tab">Manage Catalogues</a></li>
-                <li><a href="#category" data-toggle="tab">Manage Categories</a></li>
-                <li><a href="#product" data-toggle="tab">Manage Products</a></li>
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="catalogue">
+          <div class="col-lg-8">
+            <div class="panel panel-default"> <!-- panel-default -->
+                <div class="panel-heading">Manage your Store</div>
+                <div class="panel-body"> <!-- panel-body -->
+                <div class="bs-example"> <!-- bs-example -->
+                  <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                    <li class="active"><a href="#catalogue" data-toggle="tab">Manage Catalogues</a></li>
+                    <li><a href="#category" data-toggle="tab">Manage Categories</a></li>
+                    <li><a href="#products-list" data-toggle="tab">Manage Products</a></li>
+                  </ul>
+                  <div id="myTabContent" class="tab-content"> <!-- tab-content -->
+                    <div class="tab-pane fade active in" id="catalogue"> <!--  first tab-pane -->
+                        <div class="panel panel-default"> <!--panel default -->
 
-                    <ul class="nav nav-pills nav-stacked col-lg-3">
-                      <li class="active"><a href="#tab_a" data-toggle="pill">Pill A</a></li>
-                      <li><a href="#tab_b" data-toggle="pill">Pill B<span class="badge">You</span> </a></li>
-                      <li><a href="#tab_c" data-toggle="pill">Pill C</a></li>
-                      <li><a href="#tab_d" data-toggle="pill">Pill D</a></li>
-                    </ul>
-                    <div class="tab-content col-lg-9">
-                            <div class="tab-pane active" id="tab_a">
-                                 <h4>Pane A</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                            <div class="tab-pane" id="tab_b">
-                                 <h4>Pane B</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                            <div class="tab-pane" id="tab_c">
-                                 <h4>Pane C</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                            <div class="tab-pane" id="tab_d">
-                                 <h4>Pane D</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                    </div><!-- tab content -->
+                            <div class="panel-heading clearfix"><!--panel-heading -->
 
+                              <div class="col-lg-6 col-md-6 pull-left"><!--pull-left -->
+                                  <form role="form">
+                                      <div class="form-group input-group">
+                                        <input type="text" class="form-control" placeholder="Search Catalogue">
+                                        <span class="input-group-btn">
+                                          <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                      </div>
+                                  </form>
+                              </div><!--pull-left -->
+
+                              <div class="btn-group pull-right"><!--pull-right -->
+
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#catalogueModal"><i class="fa fa-plus">New Catalogue</i></button>
+                                <div id="catalogueModal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content"><!--modal content-->
+                                            <div class="modal-header"><!--modal header-->
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title">Add Catalogue</h4>
+                                            </div><!--modal header-->
+
+                                            <div class="modal-body"><!--modal body-->
+
+                                                <form role="form" id="catalogue-form">
+                                                    <fieldset>
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            <label>Catalogue Name</label>
+                                                            {{ catalogue_form.catalogue_name }}
+                                                            {{ catalogue_form.catalogue_name.help_text }}
+                                                            <p class="help-block" id="catalogue-name-error"></p>
+                                                        </div>
+                                                    </fieldset>
+
+                                                  <div id="catalogue-messages"></div>
+                                                </form>
+                                            </div><!--modal body-->
+                                            <div class="modal-footer"><!--modal footer-->
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary" id="catalogue-add">Save</button>
+                                            </div><!--modal footer-->
+                                        </div><!--modal content-->
+                                    </div>
+                                </div><!--modal-->
+
+                              </div><!--pull-right -->
+                            </div><!--panel-heading -->
+
+                            <div class="panel-body" id="catalogues-list">
+
+                            </div>
+
+
+                            <div id="categoryModal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content"><!--modal content-->
+                                        <div class="modal-header"><!--modal header-->
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h5 class="modal-title">Add Category in <span class="text-info" id="category_name_dup"></span> </h5>
+                                        </div><!--modal header-->
+
+                                        <div class="modal-body"><!--modal body-->
+
+                                            <form role="form" id="category_form_save">
+                                                <fieldset>
+                                                    {% csrf_token %}
+                                                    <input type="hidden" id="catalogue_cat_id" name="catalogue-cat-id"/>
+                                                    <div class="form-group">
+                                                        <label>Category Name</label>
+                                                        {{ category_form.category_name }}
+                                                        <p class="help-block" id="category-name-error"></p>
+                                                    </div>
+                                                </fieldset>
+
+                                              <div id="category_messages"></div>
+                                            </form>
+                                        </div><!--modal body-->
+                                        <div class="modal-footer"><!--modal footer-->
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary" id="category_add_btn">Save</button>
+                                        </div><!--modal footer-->
+                                    </div><!--modal content-->
+                                </div>
+                            </div><!--modal-->
+
+                            <div class="panel-footer">
+                                <div  id="catalogue-panel">
+                                    Catalogues list.
+                                </div>
+                            </div>
+
+                        </div>      <!--panel default -->
+                    </div><!--  first tab-pane -->
+                    <div class="tab-pane fade" id="category"><!-- second tab-pane -->
+
+                        <div class="panel panel-default"> <!--panel default -->
+
+                            <div class="panel-heading clearfix"><!--panel-heading -->
+
+                              <div class="col-lg-6 col-md-6 pull-left"><!--pull-left -->
+                                  <form role="form">
+                                      <div class="form-group input-group">
+                                        <input type="text" class="form-control" placeholder="Search Category">
+                                        <span class="input-group-btn">
+                                          <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                      </div>
+                                  </form>
+                              </div><!--pull-left -->
+
+                              <div class="btn-group pull-right"><!--pull-right -->
+                                <button class="btn btn-default" type="button"><i class="fa fa-plus">New Category</i></button>
+                              </div><!--pull-right -->
+
+                            </div><!--panel-heading -->
+
+                            <div class="panel-body" id="categories-list">
+
+                            </div>
+
+                            <!-- Modal HTML -->
+                            <div id="productModal" class="modal fade"> <!--modal-->
+                                <div class="modal-dialog">
+                                    <div class="modal-content"><!--modal content-->
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h5 class="modal-title">Add Product in <span class="text-info" id="product_name_dup"></span> </h5>
+                                        </div>
+                                        <div class="modal-body row"><!--modal body-->
+
+
+                                            <form role="form" id="product_add_form">
+                                                <div class="col-md-6 col-lg-6">
+                                                    {% csrf_token %}
+
+                                                    <input type="hidden" id="product_cat_id" name="product-cat-id"/>
+
+                                                    <!--{{ product_desc_form.tax }}-->
+
+                                                    <div class="form-group">
+                                                        <label>Product Name</label>
+                                                        {{ product_form.product_name }}
+                                                        <p class="help-block" id="product-name-error"></p>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Product Serial Code</label>
+                                                        {{ product_form.product_serial_code }}
+                                                        <p class="help-block" id="product-serial-error"></p>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Quantity</label>
+                                                        {{ product_desc_form.quantity }}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Restocking Value</label>
+                                                        {{ product_desc_form.restock_value }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Cost Price</label>
+                                                        {{ product_desc_form.buying_price }}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Sale Price</label>
+                                                        {{ product_desc_form.selling_price }}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Tax category</label>
+                                                        {{ product_desc_form.tax }}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Description</label>
+                                                        {{ product_desc_form.description }}
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+                                        <div class="modal-footer row"><!--modal footer-->
+                                              <div id="product-messages" class="col-lg-8 col-md-8">
+
+                                              </div>
+                                              <div class="col-lg-4 col-md-4">
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                  <button type="submit" class="btn btn-primary" id="product_add">Save</button>
+                                              </div>
+                                        </div><!--modal footer-->
+                                    </div><!--modal content-->
+                                </div>
+                            </div><!--modal-->
+
+                            <div class="panel-footer">
+                                Panel Footer Content
+                            </div>
+                        </div>      <!--panel default -->
+                    </div>                                   <!-- second tab-pane -->
+
+                    <div class="tab-pane fade" id="products-list"> <!-- third tab-pane -->
+                    </div>                                   <!-- third tab-pane -->
+                  </div><!-- tab-content -->
+
+                </div> <!-- bs-example -->
+                </div>   <!-- panel-body -->
+                </div><!-- panel-default -->
+          </div><!-- col-lg-8-->
+
+          <div class="col-lg-4"><!-- col-lg-4 -->
+            <div class="panel panel-default">
+                <div class="panel-heading">Store Summaries</div>
+                <div class="panel-body">
+
+                    <div class="panel panel-info"><!--panel info -->
+                      <div class="panel-heading"><!--panel-heading -->
+                            <div class="row"><!--row -->
+                                <div class="col-xs-6">
+                                    <i class="fa fa-comments fa-3x"></i>
+                                </div>
+                                <div class="col-xs-6 text-right" id="catalogues-summary">
+                                </div>
+                            </div><!--row -->
+                      </div><!--panel-heading -->
+                      <a href="javascript:void(0);">
+                        <div class="panel-footer"><!-- panel-footer-->
+                          <div class="row"><!--row -->
+                            <div class="col-xs-6">
+                              Total Catalogues
+                            </div>
+                            <div class="col-xs-6 text-right">
+                              <i class="fa fa-arrow-circle-right"></i>
+                            </div>
+                          </div><!--row -->
+                        </div><!-- panel-footer-->
+                      </a>
+                    </div><!--panel info -->
+
+                    <div class="panel panel-info"><!--panel info -->
+                      <div class="panel-heading"><!--panel-heading -->
+                            <div class="row"><!--row -->
+                                <div class="col-xs-6">
+                                    <i class="fa fa-comments fa-3x"></i>
+                                </div>
+                                <div class="col-xs-6 text-right" id="categories-summary">
+                                </div>
+                            </div><!--row -->
+                      </div><!--panel-heading -->
+                      <a href="javascript:void(0);">
+                        <div class="panel-footer"><!-- panel-footer-->
+                          <div class="row"><!--row -->
+                            <div class="col-xs-6">
+                              Total Categories
+                            </div>
+                            <div class="col-xs-6 text-right">
+                              <i class="fa fa-arrow-circle-right"></i>
+                            </div>
+                          </div><!--row -->
+                        </div><!-- panel-footer-->
+                      </a>
+                    </div><!--panel info -->
+
+                    <div class="panel panel-info"><!--panel info -->
+                      <div class="panel-heading"><!--panel-heading -->
+                            <div class="row"><!--row -->
+                                <div class="col-xs-6">
+                                    <i class="fa fa-comments fa-3x"></i>
+                                </div>
+                                <div class="col-xs-6 text-right" id="products-summary">
+                                </div>
+                            </div><!--row -->
+                      </div><!--panel-heading -->
+                      <a href="javascript:void(0);">
+                        <div class="panel-footer"><!-- panel-footer-->
+                          <div class="row"><!--row -->
+                            <div class="col-xs-6">
+                              Total Products
+                            </div>
+                            <div class="col-xs-6 text-right">
+                              <i class="fa fa-arrow-circle-right"></i>
+                            </div>
+                          </div><!--row -->
+                        </div><!-- panel-footer-->
+                      </a>
+                    </div><!--panel info -->
                 </div>
-                <div class="tab-pane fade" id="category">
-                  <p>Categories</p>
-                </div>
-                <div class="tab-pane fade" id="product">
-                  <p>Products</p>
-                </div>
-              </div>
+                <!--<div class="panel-footer">
+                    Store Summaries as of Now.
+                </div>-->
             </div>
-          </div>
 
-          <div class="col-lg-6"><!-- col-lg-6 -->
-            <h2 id="nav-tabs">Tabs</h2>
-
-          </div><!-- col-lg-6 -->
+          </div><!-- col-lg-4 -->
 
         </div><!-- row -->
 
 <script type="text/javascript">
-$(function(){
+var delay = 5000; //5 seconds .
+
+setInterval(function (){
+  //code goes here that will be run every 5 seconds.
+  $.ajax({
+      type: 'GET',
+      url: '/pos_app/store_summary/',
+      dataType: 'json',
+      //contentType: "application/json; charset=utf-8",
+      success: function(response) {
+          if(response['catalogue_code']){
+             var catalogue = response['store_error'];
+             $('#catalogues-summary').html('<p class="announcement-heading">'+response['catalogue_count']+'</p>');
+          }
+          if(response['category_code']){
+              $('#categories-summary').html('<p class="announcement-heading">'+response['category_count']+'</p>');
+          }
+          if(response['product_code']==1){
+              $('#products-summary').html('<p class="announcement-heading">'+response['product_count']+'</p>');
+          }/*else{
+              $('#catalogues-summary,#products-summary,#categories-summary').html('<p class="text-info">0</p>');
+
+          }*/
+
+          $('#catalogues-summary,#products-summary,#categories-summary').fadeOut(1500, function(){
+
+                $('#catalogues-summary,#products-summary,#categories-summary').fadeIn(1500);
+
+          });
+
+      },
+      error: function(error){
+        $('#catalogues-summary,#products-summary,#categories-summary').html(error); // update the DIV
+      }
+  });
+}, delay);
+
+
+//setInterval(function (){
+  //code goes here that will be run every 5 seconds.
+
+  //fetch products that are nearing to be out of stock
+    $('#loading').hide();
+  $.ajax({
+      type: 'GET',
+      url: '/pos_app/check_stock/',
+      beforeSend: function() {
+         $('#loading').fadeIn('fast');
+      },
+      complete: function(){
+         $('#loading').fadeOut('slow');
+      },
+      success: function(response) {
+          $('#nearing-out-of-stock-list').html(response); // update the DIV
+      },
+      error: function(error){
+        $('#nearing-out-of-stock-list').html(error); // update the DIV
+      }
+  });
+  //fetct products that are completely out of stock
+  $.ajax({
+      type: 'GET',
+      url: '/pos_app/check_stock_out/',
+      beforeSend: function() {
+         $('#loading').fadeIn('fast');
+      },
+      complete: function(){
+         $('#loading').fadeOut('slow');
+      },
+      success: function(response) {
+          $('#out-of-stock-list').html(response); // update the DIV
+      },
+      error: function(error){
+        $('#out-of-stock-list').html(error); // update the DIV
+      }
+  });
+//}, delay);
+
+
+//load the catalogues list
+  $.ajax({ // create an AJAX call...
+      type: 'GET', // GET or POST
+      url: '/pos_app/get_catalogues/', // the file to call
+      success: function(response) { // on success..
+        $('#catalogues-list').html(response); // update the DIV
+      },
+      error: function(response){
+        $('#catalogues-list').html(response); // update the DIV
+      }
+  });
+
+  //load the categories list
+  $.ajax({ // create an AJAX call...
+      type: 'GET', // GET or POST
+      url: '/pos_app/get_categories/', // the file to call
+      success: function(response) { // on success..
+        $('#categories-list').html(response); // update the DIV
+      },
+      error: function(response){
+        $('#categories-list').html(response); // update the DIV
+      }
+  });
+
+  //load the categories list
+  $.ajax({ // create an AJAX call...
+      type: 'GET', // GET or POST
+      url: '/pos_app/get_products/', // the file to call
+      success: function(response) { // on success..
+        $('#products-list').html(response); // update the DIV
+      },
+      error: function(response){
+        $('#products-list').html(response); // update the DIV
+      }
+  });
+
 
     $('#save-stock').attr('disabled',true);
 
@@ -238,15 +523,12 @@ $(function(){
             $('#total-stock-rep').val(enteredStock+currentStock);
             $('#save-stock').attr('disabled',false);
         }
-        //var entered-stock = $('#rep-stock').val();
-
     });
 
 
     //on form submission by clicking the save-stock button
     $('#save-stock').on('click', function (event) { // catch the form's submit event
       event.preventDefault();
-      //alert('heheh');
       $.ajax({ // create an AJAX call...
           data: $('#stock-form').serialize(), // get the form data
           type: 'POST', // GET or POST
@@ -262,7 +544,7 @@ $(function(){
 
     });
 
-});
+
 </script>
 
 <script>
@@ -273,22 +555,175 @@ $(document).ready(function(){
 });
 </script>
 
-<script type="text/javascript">
-//once the DOM is ready
-//$(document).ready(function() {
-   $.ajax({ // create an AJAX call...
-      //data: $('#tax-form').serialize(), // get the form data
-      type: 'GET', // GET or POST
-      url: '/pos_app/store/', // the file to call
-      //dataType:'json',
-      success: function(response) { // on success..
-          $('#out-ofstock,out-ofstock-list').html(response);, // update the DIV
-      },
-      error: function(response) { // on error..
-          $('#out-ofstock').html(response); // update the DIV
-      }
-  });
-  //return false;
-//});
+
+<script>
+/*
+//disable the buttons in the modals
+//$('#catalogue-add,#category_add_btn,#product_add').attr('disabled',true);
+$('#catalogue-add,#category_add_btn,#product_add').hide();
+//if modal is hidden clear the inputs
+$('.modal').on('hidden', function () {
+      $('.modal input,textarea,select').val("");
+});
+
+//check if any of this catalogue,product or category,product serial exists
+$('.modal .form-control').on('keyup', function (event) {
+   var idName = $(this).attr('id');
+   //if catalogue,product or category,product serial call this ajax
+   if (idName=='catalogue-name' || idName=='category-name' || idName=='product-name' || idName=='product-serial-code'){
+
+        $.ajax({
+            type: 'GET',
+            url: '/pos_app/check_cat_prod_exist/',
+            dataType: 'json',
+            data: $('#catalogue-form,#category_form_save,#product_add_form').serialize(),
+            success: function (response) {
+                if (response['error_code'] == 1){
+                   $('#catalogue-name-error').html('<i class="fa fa-exclamation-circle"></i><span class="label label-danger">Catalogue name exists.</span>');
+                    $('#catalogue-add').hide('fast');
+                }else if (response['error_code'] == 2){
+                    $('#catalogue-name-error').html('<i class="fa fa-check-circle"></i><span class="label label-primary">The catalogue can be added.</span>');
+                    $('#catalogue-add').show('fast');
+                }else if (response['error_code'] == 3){
+                   $('#category-name-error').html('<i class="fa fa-exclamation-circle"></i><span class="label label-danger">Category name exists.</span>');
+                   $('#category_add_btn').hide('fast');
+                }else if (response['error_code'] == 4){
+                    $('#category-name-error').html('<i class="fa fa-check-circle"></i><span class="label label-primary">The category can be added.</span>');
+                    $('#category_add_btn').show('fast');
+                }else if (response['error_code'] == 5){
+                   $('#product-name-error').html('<i class="fa fa-exclamation-circle"></i><span class="label label-danger">Product name exists.</span>');
+                   $('#product_add').hide('fast');
+                }else if (response['error_code'] == 6){
+                    $('#product-name-error').html('<i class="fa fa-check-circle"></i><span class="label label-primary">The product name can be added.</span>');
+                    $('#product_add').show('fast');
+                }else if (response['error_code'] == 7){
+                   $('#product-serial-error').html('<i class="fa fa-exclamation-circle"></i><span class="label label-danger">Product serial exists.</span>');
+                   $('#product_add').hide('fast');
+                }else if (response['error_code'] == 8){
+                    $('#product-serial-error').html('<i class="fa fa-check-circle"></i><span class="label label-primary">The product serial can be added.</span>');
+                    $('#product_add').show('fast');
+                }else{
+
+                }
+            },
+            error: function (response) { // on error..
+                //$('#catalogue-messages').html(response);
+            }
+        });
+   }else{
+
+   }
+
+});*/
+//handle button save functions for catalogues,categories and product adding
+    //on form submission by clicking the save-stock button
+    $('#catalogue-add').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            data: $('#catalogue-form').serialize(),
+            type: 'POST',
+            url: '/pos_app/catalogue_add/',
+            success: function (response) {
+                $('#catalogue-messages').html(response);
+            },
+            error: function (response) { // on error..
+                $('#catalogue-messages').html(response);
+            }
+        });
+    });
+
+    //on form submission by clicking the category-add button
+    //$('#category_add_btn').on('click', function (event) {
+    $('#category_add_btn').click(function() {
+        //event.preventDefault();
+        $.ajax({
+            data:$('#category_form_save').serialize(),
+            type: 'POST',
+            url: '/pos_app/catalogue_add/',
+            success: function (response) {
+                $('#category_messages').html(response);
+                //window.();
+            },
+            error: function (response) {
+                $('#category_messages').html(response);
+            }
+        });
+    });
+
+    //on form submission by clicking the product-add button
+    $('#product_add').on('click', function (event) {
+
+        //regular expressions
+        //regex to check if integer or float or not a number
+        var intRegex = /^\d+$/;
+        var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+        //var wordRegex = /^\a-z+$/;
+
+        //get the variables
+        var productName = $('#product-name').val();
+        var productSerial = $('#product-serial-code').val();
+        var buyingPrice = $('#buying-price').val();
+        var sellingPrice = $('#selling-price').val();
+        var quantity = $('#quantity').val();
+        var restockValue = $('#restock-value').val();
+        var description = $('#description').val();
+
+        var taxSelect = $('#tax-select').val();
+
+
+        $('#product-name').css('textTransform', 'capitalize');
+
+        $('#description').css('textTransform', 'capitalize');
+
+        //alert(taxSelect);
+
+        //alert(productName+' '+productSerial+' '+buyingPrice+' '+sellingPrice+' '+quantity+' '+restockValue+' '+description);
+
+        if(productName == ''){
+            $('#product-messages').html('<div class="alert alert-danger text-danger" role="alert">Please enter the product name.</div>');
+            $('#product-name').attr('id','product-name inputError');
+        }
+        else if(productSerial==''){
+             $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Enter product serial code</strong></div>');
+        }else if(!intRegex.test(productSerial)) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>The serial should be a number.</strong></div>');
+        }else if(!intRegex.test(quantity)) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>The quantity must be a number.</strong></div>');
+        }else if(restockValue=='') {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Please enter the restock quantity.</strong></div>');
+        }else if(!intRegex.test(restockValue)) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Restock quantity must be a number.</strong></div>');
+        }/*else if(quantity<restockValue) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Quantity must be more than restock value..</strong></div>');
+        }*/else if(buyingPrice=='') {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Please enter the cost price.</strong></div>');
+        }else if(!intRegex.test(buyingPrice)) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>The cost price must be a number.</strong></div>');
+        }else if(sellingPrice=='') {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Please enter the sale price.</strong></div>');
+        }else if(!intRegex.test(sellingPrice)) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>The sale price must be a number.</strong></div>');
+        }else if(sellingPrice <= buyingPrice) {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Sale price must be more than cost pricee.</strong></div>');
+        }else if(taxSelect=='') {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Please select the tax category.</strong></div>');
+        }else if(description=='') {
+            $('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>Please enter the description.</strong></div>');
+        }else {
+            //$('#product-messages').html('<div class="alert alert-danger" role="alert"><strong>huhuhu.</strong></div>');
+            // to capitalize all words
+            $.ajax({
+                data:$('#product_add_form').serialize(),
+                type: 'POST',
+                url: '/pos_app/catalogue_add/',
+                success: function (response) {
+                    $('#product-messages').html(response);
+                },
+                error: function (response) {
+                    $('#product-messages').html(response);
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}

@@ -232,7 +232,7 @@
                             data: $("#login_form").serialize() ,
                             success: function (response)
                                 {
-                                    if(response =='/pos_app/tax/'){
+                                    if(response =='/pos_app/settings/'){
                                         //show success message
                                         $('#modal_login').html("<div class='alert alert-dismissable alert-info' id='pos_messages'>" +
                                                 "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
@@ -248,6 +248,7 @@
                                         setTimeout(function(){
                                             //window.location.replace(response);
                                             window.location = response;
+                                            //console.log('thuku');
                                         }, delay);
 
                                     }else{

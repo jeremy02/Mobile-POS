@@ -1,15 +1,140 @@
-{% if product_result.count > 0 %}
-  <div class="alert alert-dismissable alert-success">
+{% if final_sales_error %}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ final_sales_error }}</span>
+    </div>
+{% endif %}
+
+{% if final_sales_warning %}
+    <div class="alert alert-dismissable alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <span>{{ final_sales_warning }}</span>
+    </div>
+{% endif %}
+
+{% if final_sales_success %}
+    <ul class="nav nav-pills"  style="margin-bottom:10px;">
+          {% for i in category_list%}
+            {% if forloop.first %}
+                <li class="active"><a href="#{{i.id}}" data-toggle="pill">{{i.category_name}}</a></li>
+            {% else %}
+                <li><a href="#{{i.id}}" data-toggle="pill">{{i.category_name}}</a></li>
+            {% endif %}
+          {% endfor%}
+    </ul>
+
+    <div id="tab-content" class="tab-content"><!--tab-content -->
+
+            {% for i in category_list%}
+              {% if forloop.first %}<!--if its the first item in the loop -->
+                    <div class="tab-pane fade active in" id="{{ i.id }}">  <!--tab-pane -->
+
+                        <div class="row panel panel-green">
+                            <!--<div class="panel-heading">{{i.category_name}}</div>-->
+                            <div class="panel-body">
+                                {% for product in i.product_set.all %}
+                                {% for i in product.product_description_set.all %}
+                                {% if i.quantity > 0 %}
+                                    <a class="btn btn-success" href="" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}" style="color: #ffffff;margin-bottom:10px;"> {{product.product_name }} </a>
+                                {% else %}
+                                    <a class="btn btn-success" href="javascript:void(0);" style="color: #ffffff;margin-bottom:10px;">{{product.product_name }} <span class="badge">Out of Stock</span></a>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+                    </div> <!--tab-pane -->
+              {% else %} <!--if its other items in the loop -->
+                    <div class="tab-pane fade in" id="{{ i.id }}">  <!--tab-pane -->
+
+                        <div class="row panel panel-green">
+                            <!--<div class="panel-heading">{{i.category_name}}</div>-->
+                            <div class="panel-body">
+                                {% for product in i.product_set.all %}
+                                {% for i in product.product_description_set.all %}
+                                {% if i.quantity > 0 %}
+                                    <a class="btn btn-success" href="" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}" style="color: #ffffff;margin-bottom:10px;"> {{product.product_name }} </a>
+                                {% else %}
+                                    <a class="btn btn-success" href="javascript:void(0);" style="color: #ffffff;margin-bottom:10px;">{{product.product_name }} <span class="badge">Out of Stock</span></a>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+                    </div> <!--tab-pane -->
+              {% endif %}
+
+            {% endfor%}
+    </div> <!--tab-content -->
+
+    <ul class="pager" id="product-items-pagination">
+
+
+
+        {% if category_list.has_previous %}
+            <li class="previous col-md-4 col-lg-4"><a href="javascript:void(0);" page="{{ category_list.previous_page_number }}">&larr;Previous</a></li>
+        {% endif %}
+
+
+        <li class="disabled col-md-4 col-lg-4">
+            <a href="javascript:void(0);">Page {{category_list.number}} of {{ category_list.paginator.num_pages }}.</a>
+        </li>
+
+        {% if category_list.has_next %}
+            <li class="next col-md-4 col-lg-4"><a href="javascript:void(0);" page="{{ category_list.next_page_number }}">Next &rarr;</a></li>
+        {% endif %}
+
+    </ul><!--pagination -->
+
+
+
+{% endif %}
+<!--second search for sales -->
+{% if search_warning %}
+    <a class="list-group-item active" href="">{{ search_warning }}</a>
+{% endif %}
+
+{% if search_success %}
+    {% if product_result.count > 0 %}
+        <div class="alert alert-dismissable alert-success">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <strong>Success!</strong> The number of products found is:  <a class="alert-link" >{{ product_result.count }}</a>.
-  </div>
+        </div>
+        {% for product in product_result %}
+            {% for i in product.product_description_set.all %}
+            {% if i.quantity > 0 %}
+                <a class="list-group-item" href="" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}"> {{product.product_name }} </a>
+            {% else %}
+                <a href="" class="list-group-item">{{product.product_name }} <span class="badge">Not for Sale</span>
+            {% endif %}
+            {% endfor %}
+        {% endfor %}      .
 
-  {% for product in product_result %}
-    <a class="list-group-item" href="" data-toggle="modal" data-target="#myModal" value="{{ product.id  }}"> {{product.product_name }}</a>
-  {% endfor %}
+    {% else %}
 
 
-{% elif details.count > 0 %}
+
+    {% endif %}
+
+{% endif %}
+
+{% if search_error %}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <span>{{ search_error }}</span>
+    </div>
+{% endif %}
+
+{% if details.count > 0 %}
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -34,46 +159,73 @@
       <div class="modal-body">
 
       	<div class="row">
-          <div class="col-lg-12">
 
-          	<div class="col-lg-4 text-center">
+          	<div class="col-lg-4 col-md-4 text-center"><!-- /.col-lg-4-->
 	            <div class="panel panel-default">
 	              <div class="panel-body">
 	                Image of Product
 	              </div>
 	            </div>
-            </div>
+            </div><!-- /.col-lg-4-->
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 col-md-8"><!-- /.col-lg-8-->
                 <form role="form" id="sales_line_item_form">
                 <!--<form action="/pos_app/product_details/" method="post" id="sales_form">-->
                   {% for details in details %}
-                  <div id="ajaxwrapper">
-                  {% csrf_token %}
-                  <input id="product_name" value="{{ details.product.product_name }}" type="hidden" name = "product_name">
-                  <input id="price" value="{{ details.selling_price }}" type="hidden" name = "price">
-                  <input id="tax" value="{{ details.tax.tax_rate }}" type="hidden" name="tax">
-                  <input id="id" value="{{ details.product.id }}" type="hidden" name="id">
+                      {% csrf_token %}
+                      <input id="product_name" value="{{ details.product.product_name }}" type="hidden" name = "product_name">
+                      <input id="price" value="{{ details.selling_price }}" type="hidden" name = "price">
+                      <input id="tax" value="{{ details.tax.tax_rate }}" type="hidden" name="tax">
+                      <input id="id" value="{{ details.product.id }}" type="hidden" name="id">
 
-                  <input id="subtotal2" value="" name ="subtotal2" type="hidden">
-                  <input id="tax_amount2" value="" name = "tax_amount2" type="hidden">
-                  <input id="net_total2" value="" name = "net_total2" type="hidden">
-                  <input id="id2" value="{{ details.product.id }}" type="hidden" name="id2">
-                  <input id="transaction-no-duplicate" type="text" name="transaction-no-duplicate">
+                      <input type="hidden" value="{{ user.username }}" name="username"/>
+                      <input type="hidden" value="{{ user.id }}" name="user-id"/>
 
+                      <input id="transaction-no-duplicate" type="hidden" name="transaction-no-duplicate">
 
-                  {{ form.non_field_errors }}
-                  {{ form.as_p }}
+                          <div class="form-group">
+                                <label>Quantity</label>
+                                {{ form.quantity }}
+                                <p class="help-block" id="quantity-error"></p>
+                          </div>
 
-                  <button type="submit"  class="btn btn-danger pull-right" id="add-to-list"> Add to List </button>
-                  <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
-                  </div>
+                          <div class="form-group">
+                                {{ form.subtotal }}
+                          </div>
+
+                          <div class="form-group">
+                                {{ form.tax_amount }}
+                          </div>
+
+                          <div class="form-group">
+                                {{ form.net_total }}
+                          </div>
+
                   {% endfor %}
                 </form>
 
+            </div><!-- /.col-lg-8-->
+
+            <div class="row">
+                  <div class="col-lg-4 col-md-4 form-group"><!-- /.col-lg-4-->
+                        <label>Subtotal</label>
+                        <input id="subtotal2" class="form-control" value="" name ="subtotal2" type="text" disabled>
+                  </div><!-- /.col-lg-4-->
+
+                  <div class="col-lg-4 col-md-4 form-group"><!-- /.col-lg-4-->
+                        <label>Tax Amount</label>
+                        <input id="tax_amount2" class="form-control" value="" name = "tax_amount2" type="text" disabled>
+                  </div><!-- /.col-lg-4-->
+
+                  <div class="col-lg-4 col-md-4 form-group"><!-- /.col-lg-4-->
+                        <label>Net Total</label>
+                        <input id="net_total2" class="form-control" value="" name = "net_total2" type="text" disabled>
+                  </div><!-- /.col-lg-4-->
             </div>
 
-          </div>
+
+            <button type="submit"  class="btn btn-danger pull-right" id="add-to-list"> Add to List </button>
+            <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
 
         </div><!-- /.row -->
 
@@ -88,51 +240,59 @@
       <!--modal footer -->
     </div>
 
-{% elif details.count < 0 %}
-
-	<a class="list-group-item active" href=""> No products found!!!  Please search again!</a>
-
-
-{% else %}
-
-	<a class="list-group-item active" href=""> Just an error!!!  Please restart your search!!!</a>
-
-
-
 {% endif %}
 
-<script>
 
+<script type="text/javascript">
 //When DOM loaded we attach click event to button
 $(document).ready(function() {
-$('.list-group a').click(function(){
+$("#add-to-list").attr("disabled",true);
+$('#product-items-pagination li a').click( function() {
+   var page =  $(this).attr('page');
+   $.ajax({ // create an AJAX call...
+      data:{'page': page},// get the page data to be posted
+      type: 'GET', // GET or POST
+      url: '/pos_app/making_sales/', // the file to call
+      success: function(response) { // on success..
+          $('#sales-items-list').html(response).fadeOut('slow', function() { // update the DIV
+                $('#sales-items-list').fadeIn('slow');
+          });
+      },
+      error: function(response) { // on error..
+          $('#sales-items-list').html(response); // update the DIV
+      }
+  });
+
+});
+
+$('.list-group a,.panel-green .panel-body a').click(function(){
     //then call the attr method to get back the links value
     var productId = $(this).attr('value');
-    //update the results span with the href value
-    //alert(sectionId);
-    var query;
-            //query = $(this).val();
-
-            $.ajax({
-                type: "GET",
-                url: "/pos_app/product_details/",
-                data: {
-                    'search_text' : productId,
-                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
-                },
-                success: function (data)
-                    {
-                        $('#search-results2').html(data);
-                    }
-                //dataType: 'html'
+    $.ajax({
+        type: "GET",
+        url: "/pos_app/product_details/",
+        data: {
+            'search_text' : productId,
+            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: function (data)
+            {
+                $('#search-results2').html(data);
+            }
+        //dataType: 'html'
     });
 });
 
-
-$("#add-to-list").attr("disabled",true);
+//duplicate the values for transaction into another div
+var transactionno= $("#transaction-no").text();
+//duplicate the value in the div with id transaction-no-duplicate in the modal
+$("#transaction-no-duplicate").val( transactionno );
+//duplicate the value in the div with id transaction-no-duplicate1 in the the sales result
+$("#transaction-no-duplicate1").val( transactionno );
 
 $("#quantity").keyup(function(){
-  //regex to check if integer or float or not a number
+
+    //regex to check if integer or float or not a number
    var intRegex = /^\d+$/;
    var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 
@@ -157,7 +317,7 @@ $("#quantity").keyup(function(){
    net_total= Math.round(net_total).toFixed(2);
    //net_total= parseFloat(net_total);
 
-   if(quantity== ""){
+  if(quantity== ""){
        //$("#quantity").val('').attr("placeholder", "Enter the quantity").placeholder();
        $("#quantity").val('').attr("placeholder", "Enter the quantity here").blur();
        $("#subtotal").val('').attr("placeholder", "Please enter the quantity.").blur();
@@ -176,71 +336,82 @@ $("#quantity").keyup(function(){
       $("#tax_amount").val('').attr("placeholder", "Quantity must be greater than 0!!!").blur();
       $("#net_total").val('').attr("placeholder", "Quantity must be greater than 0!!!").blur();
       $("#add-to-list").attr("disabled",true);
-   }else{
-       $("#subtotal").val(subtotal);
-       $("#subtotal2").val(subtotal);
-       $("#tax_amount2").val(tax_amount);
-       $("#tax_amount").val(tax_amount);
-       $("#net_total").val(net_total);
-       $("#net_total2").val(net_total);
-       $("#add-to-list").attr("disabled",false);
+   }else {
 
-   }//end the else statement
+      $.ajax({
+          type: 'GET',
+          data: {'id': id, 'quantity': quantity},
+          url: '/pos_app/check_quantity/',
+          dataType: 'json',
+          success: function (response) {
+              if (response['error_code'] == 1) {
+                  $("#subtotal,#subtotal2").val(subtotal);
+                   $("#tax_amount2,#tax_amount").val(tax_amount);
+                   $("#net_total,#net_total2").val(net_total);
+                   $("#add-to-list").attr("disabled",false);
+                   $("#quantity-error").html('<i class="fa fa-check-circle"></i><span class="label label-info">The product can be sold</span>');
+              } else {
+                   //$("#subtotal,#subtotal2,#tax_amount2,#tax_amount,#net_total,#net_total2").parent().fadeOut('slow');
+                   //$("#subtotal,#tax_amount,#net_total,#quantity").attr("disabled",true);
+                   $("#subtotal,#tax_amount,#net_total").val('');
+                   $("#add-to-list").attr("disabled",true);
+                   $("#quantity-error").html('<i class="fa fa-exclamation-circle"></i><span class="label label-info">The product cannot be sold.Only '+response['product']+' are remaining</span>');
+              }
+
+
+          },
+          error: function (error) {
+            $('#sales_line_item_form_messages').html(error); // update the DIV
+          }
+      });
+  }
+
 });
 
-});
 
-</script>
-
-<script>
-
-//duplicate the values for transaction into another div
-var transactionno= $("#transaction-no").text();
-//duplicate the value in the div with id transaction-no-duplicate in the modal
-$("#transaction-no-duplicate").val( transactionno );
-//duplicate the value in the div with id transaction-no-duplicate1 in the the sales result
-$("#transaction-no-duplicate1").val( transactionno );
-
-$("#add-to-list").click(function(event) // catch the form's submit event
-{
-    //show the transaction div
-    //$('#sales-transaction').show();
-
+$("#add-to-list").click(function(event) {
     event.preventDefault();
-    //set the timeout for all the messages
-    //setTimeout(function(){
-        //$("#nauri_messages").fadeOut(1000)
-    //}, 1000);
 
-    //the values to append to the list of current sale
-    var name= $("#product_name").val();
-    var subtotal= $("#subtotal").val();
-    var nettotal= $("#net_total").val();
-    var taxtotal= $("#tax_amount").val();
+  //the values to append to the list of current sale
+  var name= $("#product_name").val();
+  var subtotal= $("#subtotal").val();
+  var nettotal= $("#net_total").val();
+  var taxtotal= $("#tax_amount").val();
+  var price= $("#price").val();
+  var quantity= $("#quantity").val();
 
-    //append these elements to the interface
-    $('#sales-list').prepend('<div class="list-group-item"><span class="badge">'+subtotal+'</span>'+name+'</div>');
-    //append the values for all the totals for tax,net and total sale but hide the inputs
-    $('#hidden-appends').prepend('<input class="subtotal" type="hidden" value="'+subtotal+'" name="subtotal" />');
-    $('#hidden-appends').prepend('<input class="nettotal" type="hidden" value="'+nettotal+'" name="nettotal" />');
-    $('#hidden-appends').prepend('<input class="taxtotal" type="hidden" value="'+taxtotal+'" name="taxtotal" />');
-
-    calculateSum();
-<!--this is for the sales-line-item form submission ajax call -->
-  $.ajax({ // create an AJAX call...
-      type:"POST",// GET or POST
+  <!--this is for the sales-line-item form submission ajax call -->
+  $.ajax({
+      type:"POST",
       url:'/pos_app/sales_list_add/',
-      data: $('#sales_line_item_form').serialize(),// get the form data
-      success: function(response) { // on success..
-          $('#sales_line_item_form_messages').html(response); // update the DIV
+      data: $('#sales_line_item_form').serialize(),
+      dataType: 'json',
+      success: function(response) {
+          if (response['error_code'] == 1) {
+              $('#sales_line_item_form_messages').html('<div class="alert alert-dismissable alert-info"> <span class="text-info">The item was added successfully to the sales List!!</span></div>');
+              //append these elements to the interface
+              $('#sales-list-table tbody').append('<tr><td><i class="fa fa-trash-o"></i> </td><td><span class="label label-warning">'+name+' @ '+price+'</span></td><td>'+quantity+'</td><td>'+subtotal+'</td></tr>');
+              //append the values for all the totals for tax,net and total sale but hide the inputs
+              $('#hidden-appends').prepend('<input class="subtotal" type="hidden" value="'+subtotal+'" name="subtotal" />');
+              $('#hidden-appends').prepend('<input class="nettotal" type="hidden" value="'+nettotal+'" name="nettotal" />');
+              $('#hidden-appends').prepend('<input class="taxtotal" type="hidden" value="'+taxtotal+'" name="taxtotal" />');
+              $('#hidden-appends').prepend('<input class="quantity" type="hidden" value="'+quantity+'" name="quantity" />');
+              //calculate the total sum of these values
+              calculateSum();
+          } else {
+              $('#sales_line_item_form_messages').html('<div class="alert alert-dismissable alert-warning"> <span class="text-info">The item was not added to the sales list!!</span></div>');
+          }
+
+          //$('#sales_line_item_form_messages').html(response); // update the DIV
 
           //show the modal function with a progress bar
           var progress = setTimeout(function() {
               // complete
               clearInterval(progress);
-              $('#myModal').delay(100).fadeOut(100);//.modal('hide');
-              $('body').removeClass('modal-open');
-              $('.modal-backdrop').remove();
+              //$('#myModal').delay(100).fadeOut(100);//.modal('hide');
+              //$('body').removeClass('modal-open');
+              //$('.modal-backdrop').remove();
+               $('#myModal').modal("hide");
               event.stopPropagation();
 
           }, 1800);
@@ -254,7 +425,7 @@ $("#add-to-list").click(function(event) // catch the form's submit event
 });
 
 function calculateSum() {
-    var totalsum = 0,netsum = 0,taxsum=0;
+    var totalsum = 0,netsum = 0,taxsum= 0,quantitysum= 0;
 
     //iterate through each textboxes and add the values
     //get the totalsales amount by looping through all the subtotal inputs
@@ -269,18 +440,23 @@ function calculateSum() {
     $(".taxtotal").each(function() {
         taxsum += parseFloat(this.value);
     });
+    //get the taxtotal amount by looping through all the taxtotal inputs
+    $(".quantity").each(function() {
+        quantitysum += parseFloat(this.value);
+    });
     //parse the values to the pills and show in the interface
-	$("#sum_subtotal_span").text(totalsum.toFixed(2));
+	$("#sum_subtotal_span,#payable-total").text(totalsum.toFixed(2));
     $("#sum_nettotal_span").text(netsum.toFixed(2));
     $("#sum_taxtotal_span").text(taxsum.toFixed(2));
+    $("#sum_quantity_span,#payable-quantity").text(quantitysum);
 
     //parse the values to the hidden inputs for the sales form to be posted
 	$("#totalsale").val(totalsum.toFixed(2));
+    //$("").text(totalsum.toFixed(2));
+
     $("#totalnet").val(netsum.toFixed(2));
     $("#totaltax").val(taxsum.toFixed(2));
 }
 
+});
 </script>
-
-
-

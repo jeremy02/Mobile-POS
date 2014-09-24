@@ -1,0 +1,766 @@
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h3>Home<!--<small>Enter New User</small>--></h3>
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                  <li><a href="index.html"><i class="fa fa-dashboard"></i>Reports</a></li>
+                  <li class="active"><i class="fa fa-edit"></i>Detailed Reports</li>
+                </ol>
+            </div>
+
+            <!--<div class="col-lg-5">
+
+                <div class="breadcrumb">
+                    <small>Detailed Reports</small>
+
+                </div>
+
+            </div>-->
+          </div><!-- /col-lg-12 -->
+        </div><!-- /.row -->
+
+        <div class="row">
+            <ul class="nav nav-pills nav-stacked col-md-2 col-lg-2">
+              <li class="active"><a href="#tab_a" data-toggle="pill"><i class="fa fa-shopping-cart fa-2x"></i>Sales Reports</a></li>
+              <li><a href="#tab_b" data-toggle="tab">Inventory Reports</a></li>
+              <li><a href="#tab_c" data-toggle="tab">Revenue/Payments</a></li>
+              <li><a href="#tab_d" data-toggle="tab">Report D</a></li>
+            </ul>
+
+            <div class="tab-content col-md-10 col-lg-10">
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane active" id="tab_a">
+
+                        <div class=" panel panel-default"><!-- /.panel -->
+                          <!-- /.panel-heading -->
+                          <div class="panel-heading">Sales Reports</div>
+                           <!-- /.panel-body -->
+                          <div class="panel-body">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#all-sales" data-toggle="tab">All Sales</a>
+                                </li>
+                                <li><a href="#product-sales" data-toggle="tab">Sales By Product</a>
+                                </li>
+                                <li><a href="#user-sales" data-toggle="tab">Sales by User</a>
+                                </li>
+                                <li><a href="#category-sales" data-toggle="tab">Sales by Category</a>
+                                </li>
+                            </ul>
+                            <!-- Nav tabs -->
+
+                            <br/>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content"><!-- tab-content --->
+                                <div class="tab-pane fade in active" id="all-sales"><!-- tab-pane all-sales -->
+
+                                    <div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>All Sales
+                                            <div class="pull-right" id="all-sales-report-range"><!-- pull-right -->
+
+                                               <i class="fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
+
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
+
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length" id="all-sales-pages-select">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
+
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                                  <div class="row"><!-- row -->
+                                                       <div id="all-sales-reports">
+
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            Sales
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
+
+                                </div><!-- tab-pane all-sales --->
+                                <div class="tab-pane fade" id="product-sales"><!-- tab-pane product-sales -->
+
+                                    <div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>Sales By Product
+                                            <div class="pull-right" id="sales-by-product-report-range"><!-- pull-right -->
+
+                                               <i class="fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
+
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
+
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length"  id="sales-by-product-pages-select">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
+
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                                  <div class="row"><!-- row -->
+                                                       <div id="sales-by-product-reports">
+
+
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            Panel Footer
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
+
+                                </div><!-- tab-pane product-sales -->
+                                <div class="tab-pane fade" id="user-sales"><!-- tab-pane category-sales -->
+                                    <div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>Sales By User Reports
+                                            <div class="pull-right" id="report-range3"><!-- pull-right -->
+
+                                               <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
+
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
+
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
+
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                                  <div class="row"><!-- row -->
+                                                       <div id="sales-by-user-reports">
+
+
+                                                       </div>
+                                                  </div><!-- row -->
+
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            Panel Footer
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
+                                </div><!-- tab-pane category-sales -->
+                                <div class="tab-pane fade" id="category-sales"><!-- tab-pane user-sales -->
+
+
+                                    <div class="alert alert-success">
+                                        <a href="#" class="close" data-dismiss="alert"></a>
+                                        <strong>Watch this space!</strong> To be implemented soon in version 2.0.
+                                    </div>
+
+
+                                </div><!-- tab-pane user-sales -->
+                            </div><!-- tab-content --->
+                            <!-- Tab panes -->
+
+                            <!--<div class="row">
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-comments fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <div class="huge">26</div>
+                                                    <div>New Comments!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#">
+                                            <div class="panel-footer">
+                                                <span class="pull-left">View Details</span>
+                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="panel panel-green">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-tasks fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <div class="huge">12</div>
+                                                    <div>New Tasks!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#">
+                                            <div class="panel-footer">
+                                                <span class="pull-left">View Details</span>
+                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="panel panel-yellow">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <div class="huge">124</div>
+                                                    <div>New Orders!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#">
+                                            <div class="panel-footer">
+                                                <span class="pull-left">View Details</span>
+                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="panel panel-red">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-support fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <div class="huge">13</div>
+                                                    <div>Support Tickets!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#">
+                                            <div class="panel-footer">
+                                                <span class="pull-left">View Details</span>
+                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+
+                          </div>
+                          <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_b">
+
+                        <div class=" panel panel-default"><!-- /.panel -->
+                          <!-- /.panel-heading -->
+                          <div class="panel-heading">Stock Reports</div>
+                           <!-- /.panel-body -->
+                          <div class="panel-body">
+
+                            <!-- Nav tabs -->
+                            <!--<ul class="nav nav-tabs">
+                                <li class="active"><a href="#all-stock" data-toggle="tab">Stock Summary Reports</a>
+                                </li>
+                                <li><a href="#product-stock" data-toggle="tab">Stock By Product</a>
+                                </li>
+                                <li><a href="#open-close-stock" data-toggle="tab">Opening/Closing Stock Reports</a>
+                                </li>
+                                <li><a href="#tax-stock" data-toggle="tab">Stock by Tax Category</a>
+                                </li>
+                            </ul>-->
+                            <!-- Nav tabs -->
+
+
+                            <div class="panel panel-green"><!-- panel -->
+                                <div class="panel-heading"><!-- panel-heading -->
+                                    <i class="fa fa-bar-chart-o fa-fw"></i>Opening Closing Stock Reports
+                                    <div class="pull-right"><!-- pull-right -->
+
+                                       <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                       <span></span> <b class="caret"></b>
+
+                                    </div><!-- pull-right -->
+                                </div><!-- panel-heading -->
+                                <div class="panel-body">
+
+                                    <div class="panel panel-default"><!-- panel-default -->
+                                      <div class="panel-body"><!-- panel-body -->
+                                          <div class="row"><!-- row -->
+                                               <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                  <label>
+                                                  <select aria-controls="data-table" size="1" name="data-table_length">
+                                                      <option selected="selected" value="10">10</option>
+                                                      <option value="25">25</option>
+                                                      <option value="50">50</option>
+                                                      <option value="100">100</option>
+                                                  </select>records per page</label>
+                                               </div><!-- col-lg-6 -->
+
+                                               <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                   <!-- search section-->
+                                                    <div class="input-group custom-search-form">
+                                                        <input type="text" class="form-control" placeholder="Search...">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-default" type="button">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                    <!--end search section-->
+                                               </div>
+                                          </div><!-- row -->
+
+                                          <div class="row"><!-- row -->
+                                               <div id="opening-closing-stock-reports">
+
+
+                                               </div>
+                                          </div><!-- row -->
+
+                                      </div><!-- panel-body -->
+                                    </div><!-- panel-default -->
+                                </div>
+                                <div class="panel-footer"><!-- panel-footer -->
+                                    Opening Closing Reports
+                                </div><!-- panel-footer -->
+                            </div><!-- panel -->
+
+
+                          </div>
+                          <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_c"><!-- /.tab-pane tab_C-->
+                        <div class="panel panel-default"><!-- /.panel-default-->
+                            <div class="panel-heading"><!-- /.panel-heading-->
+                                Payment Reports
+                            </div><!-- /.panel-heading-->
+                            <div class="panel-body"><!-- /.panel-body-->
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#all-payments" data-toggle="tab">All Payments</a>
+                                    </li>
+                                    <!--<li><a href="#product-payments" data-toggle="tab">Payments By Product</a>
+                                    </li>-->
+                                    <li><a href="#category-payments" data-toggle="tab">Payments by Mode of Payment </a>
+                                    </li>
+                                </ul>
+                                <!-- Nav tabs -->
+
+
+                                <br/>
+
+
+                                <!-- Tab panes -->
+                                <div class="tab-content"><!-- tab-content --->
+                                    <div class="tab-pane fade in active" id="all-payments"><!-- tab-pane all-payments -->
+
+                                        <div class="panel panel-green"><!-- panel -->
+                                            <div class="panel-heading"><!-- panel-heading -->
+                                                <i class="fa fa-bar-chart-o fa-fw"></i>All Payments Reports
+                                                <div class="pull-right" id="all-payments-report-range"><!-- pull-right -->
+
+                                                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                   <span></span> <b class="caret"></b>
+
+                                                </div><!-- pull-right -->
+                                            </div><!-- panel-heading -->
+                                            <div class="panel-body">
+
+                                                <div class="panel panel-default"><!-- panel-default -->
+                                                  <div class="panel-body"><!-- panel-body -->
+                                                      <div class="row"><!-- row -->
+                                                           <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                              <label>
+                                                              <select aria-controls="data-table" size="1" name="data-table_length" id="all-payments-pages-select">
+                                                                  <option selected="selected" value="10">10</option>
+                                                                  <option value="25">25</option>
+                                                                  <option value="50">50</option>
+                                                                  <option value="100">100</option>
+                                                              </select>records per page</label>
+                                                           </div><!-- col-lg-6 -->
+
+                                                           <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                               <!-- search section-->
+                                                                <div class="input-group custom-search-form">
+                                                                    <input type="text" class="form-control" placeholder="Search...">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default" type="button">
+                                                                            <i class="fa fa-search"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                                <!--end search section-->
+                                                           </div>
+                                                      </div><!-- row -->
+
+                                                      <div class="row"><!-- row -->
+                                                           <div id="all-payments-reports">
+
+
+                                                           </div>
+                                                      </div><!-- row -->
+
+                                                  </div><!-- panel-body -->
+                                                </div><!-- panel-default -->
+                                            </div>
+                                            <div class="panel-footer"><!-- panel-footer -->
+                                                All Payments Reports
+                                            </div><!-- panel-footer -->
+                                        </div><!-- panel -->
+
+                                    </div><!-- tab-pane all-sales --->
+
+
+                                    <div class="tab-pane fade" id="category-payments"><!-- tab-pane category-payments -->
+
+                                        <div class="panel panel-green"><!-- panel -->
+                                            <div class="panel-heading"><!-- panel-heading -->
+                                                <i class="fa fa-money fa-fw"></i>Payment Reports By Mode of Payment
+                                                <div class="pull-right" id="all-payment-reports-date-range"><!-- pull-right -->
+
+                                                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                   <span></span> <b class="caret"></b>
+
+                                                </div><!-- pull-right -->
+                                            </div><!-- panel-heading -->
+                                            <div class="panel-body">
+
+                                                <div class="panel panel-default"><!-- panel-default -->
+                                                  <div class="panel-body"><!-- panel-body -->
+
+
+                                                       <div id="payments-reports-by-mode">
+
+
+                                                       </div>
+
+                                                  </div><!-- panel-body -->
+                                                </div><!-- panel-default -->
+                                            </div>
+                                            <div class="panel-footer"><!-- panel-footer -->
+                                                Payments Reports
+                                            </div><!-- panel-footer -->
+                                        </div><!-- panel -->
+                                    </div><!-- tab-pane category-payments -->
+                                </div><!-- tab-content --->
+                                <!-- Tab panes -->
+
+                            </div><!-- /.panel-body-->
+                        </div><!-- /.panel-default-->
+
+                    </div><!-- /.tab-pane tab_C-->
+                    <div class="tab-pane" id="tab_d">
+                         <h4>Pane D</h4>
+                        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+                            ac turpis egestas.</p>
+                    </div>
+            </div><!-- tab content -->
+        </div>
+
+
+
+<script>
+$(function(){
+    var delay = 12000; //5 seconds .
+
+    var pages = $("#all-sales-pages-select option:selected").val();
+
+    //setInterval(function (){
+      $.ajax({
+          type: 'GET',
+          url: '/pos_app/get_open_close_stock/',
+          success: function(response) {
+            $('#opening-closing-stock-reports').html(response);
+          },
+          error: function(response){
+            $('#opening-closing-stock-reports').html(response);
+          }
+      });
+
+      $.ajax({
+          data:{'pages':pages},
+          type: 'GET',
+          url: '/pos_app/sales_by_product/',
+          success: function(response) {
+            $('#sales-by-product-reports').html(response);
+          },
+          error: function(response){
+            $('#sales-by-product-reports').html(response);
+          }
+      });
+
+      $.ajax({
+          data:{'pages':pages},
+          type: 'GET',
+          url: '/pos_app/all_sales_reports/',
+          success: function(response) { // on success..
+              $('#all-sales-reports').html(response);
+          },
+          error: function(response) { // on error..
+              $('#all-sales-reports').html(response);
+          }
+      });
+      //reports per user
+      $.ajax({
+          type: 'GET', // GET or POST
+          url: '/pos_app/user_sales_reports/',
+          success: function(response) {
+            $('#sales-by-user-reports').html(response);
+          },
+          error: function(response){
+            $('#sales-by-user-reports').html(response);
+          }
+      });
+
+      //all payments reports
+      $.ajax({
+          data:{'pages':pages},
+          type: 'GET',
+          url: '/pos_app/payments_reports/',
+          success: function(response) {
+            $('#all-payments-reports').html(response);
+
+          },
+          error: function(response){
+            $('#all-payments-reports').html(response);
+          }
+      });
+
+      //all payments reports
+      $.ajax({
+          type: 'GET',
+          url: '/pos_app/payment_by_mode/',
+          success: function(response) {
+            $('#payments-reports-by-mode').html(response);
+          },
+          error: function(response){
+            $('#payments-reports-by-mode').html(response);
+          }
+      });
+
+    //}, delay);
+
+});
+</script>
+
+<script type="text/javascript">
+//$('#all-sales-report-range span').html(moment().subtract(10, 'years').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+$('#all-sales-report-range span,#sales-by-product-report-range,#all-payments-report-range').html('Filter by Date')
+$('#all-sales-report-range,#sales-by-product-report-range,#all-payments-report-range').daterangepicker(
+    {
+        startDate: moment().subtract(0, 'days'),
+        endDate: moment(),
+        minDate: '01/01/2012',
+        maxDate: [moment(), moment()],
+        dateLimit: { days: 60 },
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'left',
+        buttonClasses: ['btn btn-default'],
+        applyClass: 'btn-small btn-success',
+        cancelClass: 'btn-small',
+        format: 'MM/DD/YYYY',
+        separator: ' to ',
+        locale: {
+            applyLabel: 'Submit',
+            cancelLabel: 'Clear',
+            fromLabel: 'From',
+            toLabel: 'To',
+            customRangeLabel: 'Custom',
+            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay: 1
+        }
+    },
+    function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        $('#all-sales-report-range,#sales-by-product-report-range,#all-payments-report-range').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+    }
+);
+
+
+
+    /*$('#dp5').datepicker().on('changeDate', function(ev){
+
+    });*/
+</script>
+
+<script>
+//filter all the sales reports by date ranges
+$('#all-sales-report-range').on('apply.daterangepicker', function(ev, picker) {
+    var startDate = picker.startDate.format('YYYY-MM-D ');
+    var endDate = picker.endDate.format('MMMM-D-YYYY');
+    var pages = $("#all-sales-pages-select option:selected").val();
+
+    $.ajax({
+      data:{'startDate':startDate,'endDate':endDate,'pages':pages},
+      type: 'GET',
+      url: '/pos_app/all_sales_reports/',
+      success: function(response) { // on success..
+          $('#all-sales-reports').html(response);
+      },
+      error: function(response) { // on error..
+          $('#all-sales-reports').html(response);
+      }
+    });
+});
+$('#sales-by-product-report-range').on('apply.daterangepicker', function(ev, picker) {
+    var startDate = picker.startDate.format('YYYY-MM-D ');
+    var endDate = picker.endDate.format('MMMM-D-YYYY');
+    var pages = $("#sales-by-product-pages-select option:selected").val();
+    $.ajax({
+      data:{'startDate':startDate,'endDate':endDate,'pages':pages},
+      type: 'GET',
+      url: '/pos_app/sales_by_product/',
+      success: function(response) {
+        $('#sales-by-product-reports').html(response);
+      },
+      error: function(response){
+        $('#sales-by-product-reports').html(response);
+      }
+    });
+});
+$('#all-payments-report-range').on('apply.daterangepicker', function(ev, picker) {
+    var startDate = picker.startDate.format('YYYY-MM-D ');
+    var endDate = picker.endDate.format('MMMM-D-YYYY');
+    var pages = $("#all-sales-pages-select option:selected").val();
+
+    $.ajax({
+      data:{'startDate':startDate,'endDate':endDate,'pages':pages},
+      type: 'GET',
+      url: '/pos_app/payments_reports/',
+      success: function(response) {
+        $('#all-payments-reports').html(response);
+      },
+      error: function(response){
+        $('#all-payments-reports').html(response);
+      }
+    });
+});
+/*$("#all-sales-pages-select").bind("change",function(){
+     var pages = $("#all-sales-pages-select option:selected").val();
+     $.ajax({
+      data:{'pages':pages},
+      type: 'GET',
+      url: '/pos_app/all_sales_reports/',
+      success: function(response) { // on success..
+          $('#all-sales-reports').html(response);
+      },
+      error: function(response) { // on error..
+          $('#all-sales-reports').html(response);
+      }
+    });
+
+});*/
+</script>
+
+{% endblock %}

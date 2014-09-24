@@ -1,245 +1,235 @@
+<div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>All Stock Summary
+                                            <div class="pull-right"><!-- pull-right -->
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" /> <!-- CSS -->
-        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" /> <!-- CSS -->
-        <!--<link rel="stylesheet" href="{% static "css/bootstrap-fluid-adj.css" %}" /> <!-- CSS -->
-        <!--<link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}" /> <!-- CSS -->
-        <!--<link rel="stylesheet" href="{% static "css/bootstrap-responsive.min.css" %}" /> <!-- CSS -->
+                                               <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
 
-        <!-- Add custom CSS here -->
-        <link rel="stylesheet" href="{% static "css/pos.css" %}" /> <!-- CSS -->
-        <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}">
-        <!-- Page Specific CSS -->
-        <link rel="stylesheet" href="{% static "http://cdn.oesmith.co.uk/morris-0.4.3.min.css" %}">
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
 
-        <!--Additional javascript -->
-        <script src="{% static "js/bootstrap.js" %}"></script> <!-- JavaScript -->
-        <!-- JavaScript -->
-        <script src="{% static "js/jquery-1.10.2.js" %}"></script>
-        <script>
-            var $.1.10.2 = $.noConflict(true);
-        </script>
-        <script src="{% static "js/bootstrap.js" %}"></script>
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
 
-        <!-- Page Specific Plugins -->
-        <script src="{% static "http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js" %}"></script>
-        <script src="{% static "http://cdn.oesmith.co.uk/morris-0.4.3.min.js" %}"></script>
-        <script src="{% static "js/morris/chart-data-morris.js" %}"></script>
-        <script src="{% static "js/tablesorter/jquery.tablesorter.js" %}"></script>
-        <script src="{% static "js/tablesorter/tables.js" %}"></script>
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
 
-        <title>pos_app - Data Integrated</title>
-</head>
-<body>
+                                                  <div class="row"><!-- row -->
+                                                       <div >
 
+                                                       </div>
+                                                  </div><!-- row -->
 
-{% extends 'pos_app/base.html' %}
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            All Stock Reports
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
 
-{% load static %}
+                                </div><!-- tab-pane all-sales --->
+                                <div class="tab-pane fade" id="product-stock"><!-- tab-pane product-sales -->
 
-{% block body_block %}
+                                    <div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>Stock Reports By Product
+                                            <div class="pull-right"><!-- pull-right -->
 
-        <div class="row">
-          <div class="col-lg-12">
-            <h1>Store <small>Product Statistics Overview</small></h1>
-            <ol class="breadcrumb">
-              <li class="active"><i class="fa fa-dashboard"></i> Store Management Dashboard</li>
-            </ol>
-          </div>
-        </div><!-- /.row -->
+                                               <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
 
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="panel panel-danger"><!--panel-->
-              <div class="panel-heading"> <!--panel heading-->
-                <h3 class="panel-title">Out of Stock</h3>
-              </div><!--panel heading-->
-              <div class="panel-body" id="out-ofstock"><!--panel body-->
-                    <a href="javascript:void(0);" class="list-group-item active">
-                        </span> Product Name <span class="badge">Date Out of Stock</span>
-                    </a>
-                {% if general_error %}
-                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Error!</h4>
-                        <span>{{ general_error }}</span>
-                    </div>
-                {% endif %}
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
 
-                {% if general_success %}
-                    <!--<div class="alert alert-dismissable alert-info" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Sucess!</h4>
-                        <span>{{ general_success }}</span>
-                    </div>-->
-                  <!--loop through the out of stcck products -->
-                    {% if out_of_stock_list.count > 0 %}
-                        {% for item in out_of_stock_list %}
-                        <a class="list-group-item" href="javascript:void(0);" value="{{ item.id  }}"> {{ item.product.product_name }}
-                        <span class="badge">{{ item.date_out_of_stock }}</span></a>
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
 
-                {% if general_warning %}
-                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Warning!</h4>
-                        <span>{{ general_warning }}</span>
-                    </div>
-                {% endif %}
-              </div><!--panel body-->
-              <div class="panel-footer"><!--panel footer-->
-                Shows the list of Products Out of Stock
-              </div><!--panel footer-->
-            </div><!--panel-->
-          </div>
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
 
-          <div class="col-lg-6">
-
-            <div class="panel panel-danger"><!--panel-->
-              <div class="panel-heading"> <!--panel heading-->
-                <h3 class="panel-title">Replenish Stock <small class="pull-right">Almost Running Out of stock</small></h3>
-              </div><!--panel heading-->
-              <div class="panel-body" id="out-ofstocklist"><!--panel body-->
+                                                  <div class="row"><!-- row -->
+                                                       <div>
 
 
-                {% if general_error_2 %}
-                    <div class="alert alert-dismissable alert-danger" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Error!</h4>
-                        <span>{{ general_error }}</span>
-                    </div>
-                {% endif %}
+                                                       </div>
+                                                  </div><!-- row -->
 
-                {% if general_success_2 %}
-                  {% if almost_out_of_stock_list.count > 0 %}
-                        {% for item in almost_out_of_stock_list %}
-                        <a href="javascript:void(0);" class="list-group-item">
-                            <h4 class="list-group-item-heading">{{ item.product.product_name }}</h4>
-                            </span> Remaining Items<span class="badge">{{ item.quantity }}</span>
-                            <p class="list-group-item-text">
-                                <!-- Button trigger modal -->
-                                <!-- Small modal -->
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            Stock Reports
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
 
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#smallModal" id="testing">Add Stock</button>
-                                <div id="smallModal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
-                                    <div class="modal-dialog modal-sm">
-                                        <div class="modal-content"><!--modal content-->
-                                            <div class="modal-header"><!--modal header-->
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Add Stock to: <span class="text-info">{{ item.product.product_name }}</span></h4>
-                                            </div><!--modal header-->
+                                </div><!-- tab-pane product-sales -->
+                                <div class="tab-pane fade" id="open-close-stock"><!-- tab-pane category-sales -->
+                                    <div class="panel panel-green"><!-- panel -->
+                                        <div class="panel-heading"><!-- panel-heading -->
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>Opening Closing Stock Reports
+                                            <div class="pull-right"><!-- pull-right -->
 
-                                            <div class="modal-body"><!--modal body-->
+                                               <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                               <span></span> <b class="caret"></b>
 
-                                                <form role="form">
+                                            </div><!-- pull-right -->
+                                        </div><!-- panel-heading -->
+                                        <div class="panel-body">
 
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">New Stock</span>
-                                                    <input type="text"  name="rep-stock" id="rep-stock" class="form-control" placeholder="Enter amount of stock" autofocus>
-                                                  </div>
+                                            <div class="panel panel-default"><!-- panel-default -->
+                                              <div class="panel-body"><!-- panel-body -->
+                                                  <div class="row"><!-- row -->
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                          <label>
+                                                          <select aria-controls="data-table" size="1" name="data-table_length">
+                                                              <option selected="selected" value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                                          </select>records per page</label>
+                                                       </div><!-- col-lg-6 -->
 
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">Current Stock</span>
-                                                    <input type="text" name="current-stock" id="current-stock" class="form-control" value="{{ item.quantity }}" disabled>
-                                                  </div>
+                                                       <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                           <!-- search section-->
+                                                            <div class="input-group custom-search-form">
+                                                                <input type="text" class="form-control" placeholder="Search...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <!--end search section-->
+                                                       </div>
+                                                  </div><!-- row -->
 
-                                                  <div class="form-group input-group">
-                                                    <span class="input-group-addon">Total Stock</span>
-                                                    <input type="text"  name="total-stock" id="total-stock" class="form-control">
-                                                  </div>
-
-                                                </form>
-                                            </div><!--modal body-->
-                                            <div class="modal-footer"><!--modal footer-->
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                <button type="button" class="btn btn-primary" id="save-stock">Save</button>
-                                            </div><!--modal footer-->
-                                        </div><!--modal content-->
-                                    </div>
-                                </div><!--modal-->
-
-
-                            </p>
-
-                        </a>
-                        {% endfor %}
-                    {% endif %}
-
-                {% endif %}
-
-                {% if general_warning_2 %}
-                    <div class="alert alert-dismissable alert-warning" id="pos_messages">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4 class="alert-heading">Warning!</h4>
-                        <span>{{ general_warning_2 }}</span>
-                    </div>
-                {% endif %}
-
-              </div><!--panel body-->
-              <div class="panel-footer"><!--panel footer-->
-                Search or Click any product on list to replenish the products.
-              </div><!--panel footer-->
-            </div><!--panel-->
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12">
-            <h2 id="nav-tabs">Tabs</h2>
-            <div class="bs-example">
-              <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-                <li class="active"><a href="#catalogue" data-toggle="tab">Manage Catalogues</a></li>
-                <li><a href="#category" data-toggle="tab">Manage Categories</a></li>
-                <li><a href="#product" data-toggle="tab">Manage Products</a></li>
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="catalogue">
-                  <p>Catalogue</p>
-                </div>
-                <div class="tab-pane fade" id="category">
-                  <p>Categories</p>
-                </div>
-                <div class="tab-pane fade" id="product">
-                  <p>Products</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-{% endblock %}
+                                                  <div class="row"><!-- row -->
+                                                       <div id="opening-closing-stock-reports">
 
 
-<script type="text/javascript">
+                                                       </div>
+                                                  </div><!-- row -->
 
-$('#save-stock').click(function(){
+                                              </div><!-- panel-body -->
+                                            </div><!-- panel-default -->
+                                        </div>
+                                        <div class="panel-footer"><!-- panel-footer -->
+                                            Opening Closing Reports
+                                        </div><!-- panel-footer -->
+                                    </div><!-- panel -->
+                                </div><!-- tab-pane category-sales -->
+                                <div class="tab-pane fade" id="tax-stock"><!-- tab-pane user-sales -->
+                                    <h4>Stock according to tax categories</h4>
+                                </div><!-- tab-pane user-sales -->
+                            </div><!-- tab-content --->
+                            <!-- Tab panes -->
 
-    console.log('hehehe');
+                          </div>
+                          <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
 
-});
 
-//once the DOM is ready
-$(document).ready(function() {
+                                    <div class="tab-pane fade" id="product-payments"><!-- tab-pane product-payments -->
 
-    console.log('sucess');
+                                        <div class="panel panel-green"><!-- panel -->
+                                            <div class="panel-heading"><!-- panel-heading -->
+                                                <i class="fa fa-bar-chart-o fa-fw"></i>Payment Reports By Product
+                                                <div class="pull-right"><!-- pull-right -->
 
-   $.ajax({ // create an AJAX call...
-      //data: $('#tax-form').serialize(), // get the form data
-      type: 'GET', // GET or POST
-      url: '/pos_app/store/', // the file to call
-      //dataType:'json',
-      success: function(response) { // on success..
-          $('#out-ofstock,out-ofstock-list').html(response);, // update the DIV
-      },
-      error: function(response) { // on error..
-          $('#out-ofstock').html(response); // update the DIV
-      }
-  });
-  //return false;
-});
-</script>
+                                                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                   <span></span> <b class="caret"></b>
+
+                                                </div><!-- pull-right -->
+                                            </div><!-- panel-heading -->
+                                            <div class="panel-body">
+
+                                                <div class="panel panel-default"><!-- panel-default -->
+                                                  <div class="panel-body"><!-- panel-body -->
+                                                      <div class="row"><!-- row -->
+                                                           <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                              <label>
+                                                              <select aria-controls="data-table" size="1" name="data-table_length">
+                                                                  <option selected="selected" value="10">10</option>
+                                                                  <option value="25">25</option>
+                                                                  <option value="50">50</option>
+                                                                  <option value="100">100</option>
+                                                              </select>records per page</label>
+                                                           </div><!-- col-lg-6 -->
+
+                                                           <div class="col-lg-6 col-md-6"><!-- col-lg-6 -->
+                                                               <!-- search section-->
+                                                                <div class="input-group custom-search-form">
+                                                                    <input type="text" class="form-control" placeholder="Search...">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default" type="button">
+                                                                            <i class="fa fa-search"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                                <!--end search section-->
+                                                           </div>
+                                                      </div><!-- row -->
+
+                                                      <div class="row"><!-- row -->
+                                                           <div>
+
+
+                                                           </div>
+                                                      </div><!-- row -->
+
+                                                  </div><!-- panel-body -->
+                                                </div><!-- panel-default -->
+                                            </div>
+                                            <div class="panel-footer"><!-- panel-footer -->
+                                                Payments Reports
+                                            </div><!-- panel-footer -->
+                                        </div><!-- panel -->
+
+                                    </div><!-- tab-pane product-payments -->

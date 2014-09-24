@@ -32,18 +32,6 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      View Mentions
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
           <div class="col-lg-3">
@@ -59,18 +47,6 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Complete Tasks
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
           <div class="col-lg-3">
@@ -86,18 +62,6 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Fix Issues
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
           <div class="col-lg-3">
@@ -113,18 +77,6 @@
                   </div>
                 </div>
               </div>
-              <a href="#">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Complete Orders
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
         </div><!-- /.row -->
@@ -173,11 +125,11 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">Tax Collections</h3>
                   </div>
-                  <div class="panel-body" id="tax-collections"><!--panel-body -->
+                  <!--<div class="panel-body" id="tax-collections"><!--panel-body -->
 
 
 
-                  </div> <!-- panel-body -->
+                  <!--</div> <!-- panel-body -->
                   <div class="panel-footer"><!--panel-footer -->
                     <h5 class="text-info">Contains the total taxes collected</h5>
                   </div><!-- panel footer -->
@@ -195,7 +147,6 @@
 $(document).ready(function() {
 
    $.ajax({ // create an AJAX call...
-      data: $('#tax-form').serialize(), // get the form data
       type: 'GET', // GET or POST
       url: '/pos_app/get_tax_categories/', // the file to call
       //dataType:'json',
@@ -223,7 +174,7 @@ $(document).ready(function() {
 });
 
 //if the button for posting tax categories is clicked
-$('#tax-reg-btn').click( function(event) { // catch the form's submit event
+$('#tax-reg-btn').on("click", function(event) { // catch the form's submit event
     event.preventDefault();
     $.ajax({ // create an AJAX call...
         data: $('#tax-form').serialize(), // get the form data

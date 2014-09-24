@@ -1,0 +1,60 @@
+
+{% extends 'pos_app/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Store <small>Product Statistics Overview</small></h1>
+            <ol class="breadcrumb">
+              <li class="active"><i class="fa fa-dashboard"></i> Store Management Dashboard</li>
+            </ol>
+          </div>
+        </div><!-- /.row -->
+
+
+
+        <div class="row">
+           <div class="col-sm-6 col-md-6">
+              <!-- List of uploaded documents -->
+            {% if documents %}
+
+
+               <div class="col-xs-3">
+
+                   {% for document in documents %}
+
+                    <a href="{{ document.file.url }}" class="thumbnail">
+
+                        <img src="{{ document.file.url }}" alt="{{ document.file.name }}">
+
+                    </a>
+                    <h3>{{ document.title }}</h3>
+
+                   {% endfor %}
+
+               </div>
+
+             {% else %}
+             <p>No documents.</p>
+             {% endif %}
+           </div>
+
+           <div class="col-sm-6 col-md-6">
+              <!-- Upload form. Note enctype attribute! -->
+                <form action="/pos_app/list/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    </p>
+                    <p><input type="submit" value="Upload" /></p>
+                </form>
+           </div>
+        </div>
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}

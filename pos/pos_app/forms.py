@@ -1,5 +1,5 @@
 
-from pos_app.models import Category,UserProfile,Person,Catalogue,Product,Product_Description,Tax,Sales_line_item,Pos_Users,Sales
+from pos_app.models import Category,Customer,Suppliers,Catalogue,Product,Product_Description,Tax,Sales_line_item,Pos_Users,Sales,Document,UploadFile,Payment,Payment_Mode
 from django.contrib.auth.models import User
 from django import forms
 
@@ -31,40 +31,23 @@ class PosUsersForm(forms.ModelForm):
         model = Pos_Users
         fields = ['phone_number','id_no']
 
-class UserProfileForm(forms.ModelForm):
-    #website = forms.URLField(widget=forms.TextInput(attrs={'class' : 'form-control' ,'placeholder' : 'Please enter the website', 'autocomplete' : 'off'}),help_text="Please enter your website.", required=False)
-    #picture = forms.ImageField(widget=forms.TextInput(attrs={'class' : 'form-control' ,'placeholder' : 'Upload profile image.', 'autocomplete' : 'off'}),help_text="Select a profile image to upload.", required=False)
+class CustomerForm(forms.ModelForm):
     phone = forms.IntegerField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the phone number.', 'autocomplete' : 'off'}),  help_text="Please enter a phonenumber.")
 
     class Meta:
-        model = UserProfile
+        model = Customer
         fields = ['phone']
 
-class PersonForm(forms.ModelForm):
-    #first_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class' : 'form-control','placeholder' : 'Please enter the first name.'}),  help_text="Please enter the first name.")
-    first_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the first name.' ,'autocomplete' : 'off'}))
-    last_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the second name.','autocomplete' : 'off'}))
-    #id_no = forms.IntegerField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the id number'}), initial=0)
-    id_no = forms.IntegerField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the id number' ,'autocomplete' : 'off'}))
-    telephone_number = forms.IntegerField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Please enter the phone number.', 'autocomplete' : 'off'}))
-    email_address = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control' ,'placeholder' : 'Please enter the email address.', 'autocomplete' : 'off'}))
-    #date_added = forms.CharField(widget=forms.HiddenInput())
-    #likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-
-    # An inline class to provide additional information on the form.
-    class Meta:
-        # Provide an association between the ModelForm and a model
-        model = Person
-        fields = ['first_name', 'last_name','id_no','telephone_number','email_address']
 class CatalogueForm(forms.ModelForm):
-    catalogue_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class' : 'form-control','placeholder' : 'Please enter the catalogue name here.', 'autocomplete' : 'off'}),  help_text="Please enter the catalogue name.")
+    catalogue_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Catalogue Name','id':'catalogue-name','autocomplete':'off'}),help_text="Please enter the catalogue name.")
 
     class Meta:
         model = Catalogue
         fields = ['catalogue_name']
+        exclude = ('date_added',)
 
 class CategoryForm(forms.ModelForm):
-    category_name = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control','placeholder' : 'Please enter the category name.', 'autocomplete' : 'off'}),  help_text="Please enter the category name.")
+    category_name = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control','placeholder' :'Please enter the category name.','id':'category-name', 'autocomplete' : 'off'}),  help_text="Please enter the category name.")
 
     # An inline class to provide additional information on the form.
     class Meta:
@@ -75,8 +58,8 @@ class CategoryForm(forms.ModelForm):
 
 class ProductForm(forms.ModelForm):
     #password = forms.CharField(widget=forms.PasswordInput())
-    product_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Please enter the product name.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product name.")
-    product_serial_code = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Please enter the product serial code.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product serial code.")
+    product_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'product-name','placeholder':'Please enter the product name.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product name.")
+    product_serial_code = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'product-serial-code','placeholder':'Please enter the product serial code.' , 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product serial code.")
 
     class Meta:
         model = Product
@@ -84,27 +67,28 @@ class ProductForm(forms.ModelForm):
         exclude = ('category',)
 
 class ProductDescriptionForm(forms.ModelForm):
-    buying_price = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Please enter the product buying price.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product buying price.")
-    selling_price = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Please enter the product selling price.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product selling price.")
-    quantity = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Please enter the product quantity.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product quantity.")
-    description = forms.CharField(max_length=128,widget=forms.Textarea(attrs={'class': 'form-control','placeholder':'Please enter the product description.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product description.")
+    buying_price = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'buying-price','placeholder':'Please enter the product buying price.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product buying price.")
+    selling_price = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'selling-price','placeholder':'Please enter the product selling price.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product selling price.")
+    quantity = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'quantity','placeholder':'Please enter the product quantity.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product quantity.")
+    restock_value = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'restock-value','placeholder':'Please enter the restock quantity.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the restock quantity.")
+    description = forms.CharField(max_length=128,widget=forms.Textarea(attrs={'class': 'form-control sm','id':'description','rows':'3','placeholder':'Please enter the product description.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the product description.")
 
     COLOR_CHOICES = [(c.id, c.tax_name) for c in Tax.objects.all()]
-    COLOR_CHOICES.insert(0, ('', '-- choose a vehicle type first --'))
+    COLOR_CHOICES.insert(0, ('', '-- choose a tax category first --'))
     
-    tax = forms.ChoiceField(choices=COLOR_CHOICES, widget=forms.Select())
+    tax = forms.ChoiceField(choices=COLOR_CHOICES, widget=forms.Select(attrs={'class': 'form-control','id':'tax-select'}))
 
     class Meta:
         model = Product_Description
-        fields = ('buying_price','selling_price','quantity','description', )
-        exclude = ('product',)
+        fields = ('buying_price','selling_price','quantity','restock_value','description', )
+        exclude = ('product','user',)
 
 class Sales_line_itemForm(forms.ModelForm):
     quantity = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class': 'form-control','id':'quantity','value':'','autocomplete':'off','placeholder':'Quantity(Numbers Only).'}))#,  help_text="Please enter the product quantity.")
-    subtotal = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class': 'form-control','id':'subtotal','value':''}))#,  help_text="Displays the total cash amount.")
-    tax_amount = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class': 'form-control','id':'tax_amount','value':''}))#,  help_text="Displays the total tax amount.")
-    net_total = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class': 'form-control','id':'net_total','value':''}))#,  help_text="Displays the net amount.")
-    
+    subtotal = forms.CharField(max_length=100,widget=forms.HiddenInput(attrs={'class': 'form-control','id':'subtotal','value':''}))#,  help_text="Displays the total cash amount.")
+    tax_amount = forms.CharField(max_length=100,widget=forms.HiddenInput(attrs={'class': 'form-control','id':'tax_amount','value':''}))#,  help_text="Displays the total tax amount.")
+    net_total = forms.CharField(max_length=100,widget=forms.HiddenInput(attrs={'class': 'form-control','id':'net_total','value':''}))#,  help_text="Displays the net amount.")
+
     #subject = forms.CharField(max_length=100)
     #message = forms.CharField(widget=forms.Textarea(), max_length=100)
 
@@ -132,25 +116,34 @@ class TaxForm(forms.ModelForm):
         model = Tax
         fields = ('tax_name', 'tax_code','tax_rate')
         #exclude = ('date_added',)
-"""
-class ContactForm(forms.ModelForm):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField(max_length=100)
-    message = forms.CharField(widget=forms.Textarea(), max_length=1000)
-    class Meta:
-        model = Contact
-        fields = ('name', 'email','message')
-        exclude = ('product',)
 
-
-class ContactForm2(forms.ModelForm):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField(max_length=100)
-    subject = forms.CharField(max_length=100)
-    message = forms.CharField(widget=forms.Textarea(), max_length=100)
+class UploadFileForm(forms.ModelForm):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField(label='Select a file')
 
     class Meta:
-        model = Contact2
-        fields = ('name', 'email','subject','message')
-        #exclude = ('product','status',)
-"""
+        model = UploadFile
+        fields = ('title', 'file')
+
+class DocumentForm(forms.Form):
+    docfile = forms.FileField(label='Select a file')
+
+class PaymentModeForm(forms.ModelForm):
+    payment_name = forms.CharField(max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','id':'payment-name','placeholder':'payment name.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the payment name.")
+
+
+    class Meta:
+        model = Payment_Mode
+        fields = ('payment_name',)
+
+class PaymentForm(forms.ModelForm):
+    amount_paid  = forms.CharField(max_length=128,widget=forms.HiddenInput(attrs={'class': 'form-control','id':'payment_form_amount','placeholder':'Amount Paid.', 'autocomplete' : 'off','required':'required'}),  help_text="Please enter the payment amount.")
+
+    PAYMENT_CHOICES = [(c.id, c.payment_name) for c in Payment_Mode.objects.all()]
+    #PAYMENT_CHOICES.insert(0, ('', '-- cHOOS --'))
+
+    payment = forms.ChoiceField(choices=PAYMENT_CHOICES, widget=forms.Select(attrs={'class': 'form-control','id':'payment-select'}))
+
+    class Meta:
+        model = Payment
+        fields = ('amount_paid','payment',)
